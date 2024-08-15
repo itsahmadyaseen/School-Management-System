@@ -7,7 +7,7 @@ const Sidebar = () => {
   const username = localStorage.getItem("username");
   const handleLogout = async () => {
     try {
-      await axiosInstance.post("/users/logout");
+      await axiosInstance.post("/students/logout");
       console.log("User logged out");
 
       localStorage.removeItem("token");
