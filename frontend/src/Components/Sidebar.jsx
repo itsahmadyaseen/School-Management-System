@@ -37,6 +37,11 @@ const Sidebar = () => {
             Test
           </Link>
         </li>
+        <li className="mb-3 p-1 hover:border rounded-md   hover:bg-cyan-700">
+          <Link to="/subjects" className="">
+            Subjects
+          </Link>
+        </li>
         {/* <li className="mb-3 p-1 hover:border rounded-sm border-black  hover:bg-purple-700">
           <Link to="/admin/manage-books" className="">
             Books Details

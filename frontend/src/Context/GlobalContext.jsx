@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,8 @@ const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [tests, setTests] = useState([]);
   const [selectedTest, setSelectedTest] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
@@ -62,6 +64,37 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // SUBJECT --
+
+  const fetchSubjects = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get("/subjects/get");
+      setSubjects(response.data.data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchSelectedSubject = useCallback(async (id) => {
+    try {
+      console.log('inside');
+      
+      const response = await axiosInstance.get(`/subjects/get/${id}`);
+      console.log('response subject',response.data.data);
+
+      setSelectedSubject(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      // console.log('error response', error.response);
+
+      setError(error.message);
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -73,6 +106,10 @@ export const GlobalProvider = ({ children }) => {
         selectedTest,
         submitResponse,
         alreadySubmittedError,
+        subjects,
+        fetchSubjects,
+        selectedSubject,
+        fetchSelectedSubject,
       }}
     >
       {children}

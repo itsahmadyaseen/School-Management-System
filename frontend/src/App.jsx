@@ -7,6 +7,8 @@ import Login from "./Components/Login";
 import Sidebar from "./Components/Sidebar";
 import TestDetails from "./Components/TestDetails";
 import { GlobalProvider } from "./Context/GlobalContext";
+import Subjects from "./Components/Subjects";
+import SubjectDetails from "./Components/SubjectDetails";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +22,9 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/test" element={<Test />} />
           <Route path="/test/:id" element={<TestDetails />} />
+          <Route path="/subjects" element={<Subjects />} />
+          <Route path="/subjects/:id" element={<SubjectDetails />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
         </Routes>
