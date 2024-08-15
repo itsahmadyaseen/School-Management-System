@@ -6,13 +6,7 @@ export const submitResponse = async (req, res) => {
   const { answers, testId } = req.body;
   // console.log("answers : ", answers);
 
-  const alreadySubmitted = await Response.findOne({ student: req.user.id });
-  if (alreadySubmitted) {
-    console.log("User has already submitted", alreadySubmitted);
-    return res
-      .status(403)
-      .json({ message: "User has already submitted", data: alreadySubmitted });
-  }
+ 
 
   if (!answers) {
     console.log("Cannot get answers", answers);

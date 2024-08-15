@@ -6,7 +6,7 @@ import { useGlobalContext } from "../Context/GlobalContext";
 const TestDetails = () => {
   const [answers, setAnswers] = useState([]);
   const { id } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const {
     fetchSelectedTest,
     selectedTest,

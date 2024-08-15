@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const [tests, setTests] = useState();
-  const [selectedTest, setSelectedTest] = useState();
+  const [tests, setTests] = useState([]);
+  const [selectedTest, setSelectedTest] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
@@ -33,7 +33,13 @@ export const GlobalProvider = ({ children }) => {
       setSelectedTest(response.data.data);
       setLoading(false);
     } catch (error) {
-      setError(error.message);
+      // console.log('error response', error.response);
+
+      if (error.response && error.response.status === 403) {
+        setAlreadySubmittedError(true);
+      } else {
+        setError(error.message);
+      }
       setLoading(false);
     }
   };
@@ -49,11 +55,8 @@ export const GlobalProvider = ({ children }) => {
       // console.log(response.data);
     } catch (error) {
       console.error("Error submitting test:", error);
-      console.log("error", error.response.status);
+      // console.log("error", error.response.status);
 
-      if (error.response.status === 403) {
-        setAlreadySubmittedError(true);
-      }
       setError(error.message);
       setLoading(false);
     }

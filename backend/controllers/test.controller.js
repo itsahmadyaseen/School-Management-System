@@ -1,4 +1,5 @@
 import Question from "../models/question.model.js";
+import Response from "../models/response.model.js";
 import Test from "../models/test.model.js";
 
 export const createTest = async (req, res) => {
@@ -63,6 +64,16 @@ export const getTests = async (req, res) => {
 export const getTestById = async (req, res) => {
   try {
     const testId = req.params.testId;
+
+    const alreadySubmitted = await Response.findOne({ student: req.user.id });
+    if (alreadySubmitted) {
+      console.log("User has already submitted", alreadySubmitted);
+      return res.status(403).json({
+        message: "User has already submitted",
+        data: alreadySubmitted,
+      });
+    }
+
     const tests = await Test.findById(testId)
       .populate({
         path: "class",
@@ -79,12 +90,12 @@ export const getTestById = async (req, res) => {
 
       .sort({ createdAt: -1 });
 
-    console.log("Tests fetched ", tests);
+    console.log("Test fetched ", tests);
     return res.status(200).json({ message: "Tests fetched ", data: tests });
   } catch (error) {
-    console.log("Error fetching tests ", error);
+    console.log("Error fetching test ", error);
     return res
       .status(500)
-      .json({ message: "Error fetching tests", data: error });
+      .json({ message: "Error fetching test", data: error });
   }
 };

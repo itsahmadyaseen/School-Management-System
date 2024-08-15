@@ -42,6 +42,7 @@ const Tests = () => {
             </h2>
             <p className="text-gray-600">Class: {test.class.name}</p>
             <p className="text-gray-600">Questions: {test.questions.length}</p>
+            <p className="text-gray-600">Exam Status: {test.questions.isActive? 'Ongoing':'Ended'}</p>
             <p className="text-gray-600">
               Created At: {new Date(test.createdAt).toLocaleDateString()}
             </p>

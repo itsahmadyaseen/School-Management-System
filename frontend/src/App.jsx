@@ -28,10 +28,11 @@ const AppRoutes = () => {
   );
 };
 
-function App() {            // always keep all elements inside router to enable useNavigate()
+function App() {
+  // always keep all elements inside router to enable useNavigate()
   return (
     <Router>
-      <GlobalProvider>     
+      <GlobalProvider>
         <AppRoutes />
       </GlobalProvider>
     </Router>
