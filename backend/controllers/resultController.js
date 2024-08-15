@@ -4,7 +4,17 @@ import Result from "../models/result.model.js";
 
 export const submitResponse = async (req, res) => {
   const { answers, testId } = req.body;
-  console.log("answers : ", answers);
+  // console.log("answers : ", answers);
+
+  const alreadySubmitted = await Response.findById(req.user.id);
+  if(alreadySubmitted){
+    console.log("User has already submitted", alreadySubmitted);
+    return res
+      .status(403)
+      .json({ message: "User has already submitted", data: alreadySubmitted });
+  }
+  
+  
   if (!answers) {
     console.log("Cannot get answers", answers);
     return res
