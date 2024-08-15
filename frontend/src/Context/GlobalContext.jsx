@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [tests, setTests] = useState();
-    const [selectedTest, setSelectedTest] = useState();
-    const [loading, setLoading] = useState(true);
+  const [tests, setTests] = useState();
+  const [selectedTest, setSelectedTest] = useState();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -26,11 +27,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchSelectedTest = async (id) => {
     try {
-      console.log('its running', id);
-      
       const response = await axiosInstance.get(`/tests/get/${id}`);
-      console.log(response);
-      
+      // console.log(response.data.data);
+
       setSelectedTest(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -39,20 +38,26 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-const submitResponse =  async (id, answers)=>{
-  try {
-    await axiosInstance.post(`/results/submit-response`, {
-      testId: id,
-      answers,
-    });
-    // console.log(response.data);
-  } catch (error) {
-    console.error("Error submitting test:", error);
-  }
-}
-  
+  const submitResponse = async (id, answers) => {
+    try {
+      await axiosInstance.post(`/results/submit-response`, {
+        testId: id,
+        answers,
+      });
+      navigate("/results");
 
-  
+      // console.log(response.data);
+    } catch (error) {
+      console.error("Error submitting test:", error);
+      console.log("error", error.response.status);
+
+      if (error.response.status === 403) {
+        setAlreadySubmittedError(true);
+      }
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <GlobalContext.Provider
@@ -64,6 +69,7 @@ const submitResponse =  async (id, answers)=>{
         fetchSelectedTest,
         selectedTest,
         submitResponse,
+        alreadySubmittedError,
       }}
     >
       {children}

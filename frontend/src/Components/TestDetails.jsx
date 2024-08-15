@@ -3,12 +3,18 @@ import axiosInstance from "../axiosInstance";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 
-const TestTaking = () => {
+const TestDetails = () => {
   const [answers, setAnswers] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { fetchSelectedTest, selectedTest, loading, error, submitResponse } =
-    useGlobalContext();
+  const {
+    fetchSelectedTest,
+    selectedTest,
+    loading,
+    error,
+    submitResponse,
+    alreadySubmittedError,
+  } = useGlobalContext();
 
   useEffect(() => {
     fetchSelectedTest(id);
@@ -26,11 +32,21 @@ const TestTaking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     submitResponse(id, answers);
-    navigate("/results");
   };
 
   if (loading) {
-    return <p className="text-center text-gray-500">Loading test details...</p>;
+    return <p className="text-center text-3xl border-b-4 text-gray-500">Loading test details...</p>;
+  }
+
+  if (alreadySubmittedError) {
+    return (
+      <div>
+        {" "}
+        <h3 className="text-center text-3xl text-gray-500">Authorization restricted</h3>
+        <p className="text-center text-xl text-gray-500">You have already submitted the response</p>
+      </div>
+    );
+    
   }
 
   if (error) {
@@ -94,4 +110,4 @@ const TestTaking = () => {
   );
 };
 
-export default TestTaking;
+export default TestDetails;

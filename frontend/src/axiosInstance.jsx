@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    // console.error(error.response);
+    console.error(error.response);
 
     return Promise.reject(error);
   }
