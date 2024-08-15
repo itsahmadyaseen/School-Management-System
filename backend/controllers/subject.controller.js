@@ -44,3 +44,31 @@ export const getSubjects = async (req, res) => {
       .json({ message: "Error creating subjects", data: error });
   }
 };
+
+export const getSubjectById = async (req, res) => {
+  try {
+    const subjectId = req.params.subjectId;
+
+    const subject = await Subject.findById(subjectId)
+      .populate({
+        path: "class",
+        select: "name",
+      })
+      .populate({
+        path: "questions",
+        select: "",
+      })
+
+      .sort({ createdAt: -1 });
+
+    console.log("Subject fetched ", subject);
+    return res
+      .status(200)
+      .json({ message: "Subject fetched ", data: subject});
+  } catch (error) {
+    console.log("Error fetching subject ", error);
+    return res
+      .status(500)
+      .json({ message: "Error fetching subject", data: error });
+  }
+};
