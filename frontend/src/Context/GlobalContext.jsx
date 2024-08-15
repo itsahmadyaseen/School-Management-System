@@ -11,32 +11,27 @@ export const GlobalProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const fetchTests = async () => {
+  const fetchTests = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get("/tests/get");
       setTests(response.data.data);
-      setLoading(false);
     } catch (error) {
       setError(error.message);
+    } finally {
       setLoading(false);
     }
-  };
-  if (loading) {
-    return <p className="text-center text-gray-500">Loading tests...</p>;
-  }
+  }, []);
 
-  if (error) {
-    return (
-      <p className="text-center text-red-500">Error fetching tests: {error}</p>
-    );
-  }
   
 
   return (
     <GlobalContext.Provider
       value={{
         fetchTests,
-        tests
+        tests,
+        loading,
+        error
       }}
     >
       {children}

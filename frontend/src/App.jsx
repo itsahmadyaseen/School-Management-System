@@ -6,6 +6,7 @@ import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 import Sidebar from "./Components/Sidebar";
 import TestDetails from "./Components/TestDetails";
+import { GlobalProvider } from "./Context/GlobalContext";
 
 const AppRoutes = () => {
   return (
@@ -27,10 +28,12 @@ const AppRoutes = () => {
   );
 };
 
-function App() {
+function App() {            // always keep all elements inside router to enable useNavigate()
   return (
     <Router>
-      <AppRoutes />
+      <GlobalProvider>     
+        <AppRoutes />
+      </GlobalProvider>
     </Router>
   );
 }
