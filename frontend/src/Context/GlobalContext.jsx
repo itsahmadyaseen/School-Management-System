@@ -9,6 +9,7 @@ export const GlobalProvider = ({ children }) => {
   const [selectedTest, setSelectedTest] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
@@ -80,10 +81,10 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchSelectedSubject = useCallback(async (id) => {
     try {
-      console.log('inside');
-      
+      console.log("inside");
+
       const response = await axiosInstance.get(`/subjects/get/${id}`);
-      console.log('response subject',response.data.data);
+      console.log("response subject", response.data.data);
 
       setSelectedSubject(response.data.data);
       setLoading(false);
@@ -94,6 +95,18 @@ export const GlobalProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+
+  // QUESTIONS
+
+  const addQuestions = async (id, body, options, marks, answer) => {
+    try {
+      await axiosInstance.post(`/questions/create/${id}`, body, options, marks, answer);
+
+      fetchSelectedSubject();
+    } catch (error) {
+      console.log("Error adding question", error);
+    }
+  };
 
   return (
     <GlobalContext.Provider
@@ -110,6 +123,7 @@ export const GlobalProvider = ({ children }) => {
         fetchSubjects,
         selectedSubject,
         fetchSelectedSubject,
+        addQuestions,
       }}
     >
       {children}

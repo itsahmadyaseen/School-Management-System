@@ -2,7 +2,8 @@ import Question from "../models/question.model.js";
 import Subject from "../models/subject.model.js";
 
 export const createQuestion = async (req, res) => {
-  const { body, options, answer, marks, subject, classId } = req.body;
+  const { body, options, answer, marks, classId } = req.body;
+  const { subjectId } = req.params.subjectId;
 
   try {
     const newQuestion = new Question({
@@ -10,13 +11,13 @@ export const createQuestion = async (req, res) => {
       options,
       answer,
       marks,
-      subject,
-      class:classId
+      subject:subjectId,
+      class: classId,
     });
 
     await newQuestion.save();
 
-    await Subject.findByIdAndUpdate(subject, {
+    await Subject.findByIdAndUpdate(subjectId, {
       $push: {
         questions: newQuestion._id,
       },

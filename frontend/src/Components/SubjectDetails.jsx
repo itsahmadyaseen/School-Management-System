@@ -1,15 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
+import AddQuestionModal from "./AddQuestionModal";
 
-const SubjectDetails = () => {
+const SubjectDetails = () => { 
   const { id } = useParams();
-  const { fetchSelectedSubject, selectedSubject, loading, error } =
+  const { fetchSelectedSubject, selectedSubject, loading, error, addQuestion } =
     useGlobalContext();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSelectedSubject(id);
   }, []);
+
+  const handleAddQuestion = (body, options, marks, answer) => {
+    addQuestion(id, body, options, marks, answer);
+  };
+
+  const handleClick = () => {
+    setIsModalOpen(true);
+  };
 
   if (loading) {
     return (
@@ -48,7 +59,10 @@ const SubjectDetails = () => {
               </h3>
             </div>
             <div className="text-right">
-              <button className="text-2xl font-bold text-cyan-100 mb-8 border-2  rounded-md p-2">
+              <button
+                className="text-2xl font-bold text-cyan-100 mb-8 border-2  rounded-md p-2"
+                onClick={handleClick}
+              >
                 Add Question
               </button>
             </div>
@@ -80,6 +94,11 @@ const SubjectDetails = () => {
               ))}
             </ul>
           </div>
+          <AddQuestionModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddQuestion={handleAddQuestion}
+          />
         </>
       ) : (
         <p className="text-center text-gray-500">No Details found</p>

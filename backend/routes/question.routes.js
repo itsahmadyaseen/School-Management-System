@@ -3,7 +3,7 @@ import { createQuestion, getQuestions } from "../controllers/question.controller
 
 const router = new Router();
 
-router.post("/create", createQuestion);
+router.post("/create/:subjectId", createQuestion);
 router.get("/get", getQuestions);
 
 export default router;
