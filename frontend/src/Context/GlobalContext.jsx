@@ -9,7 +9,8 @@ export const GlobalProvider = ({ children }) => {
   const [selectedTest, setSelectedTest] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [questions, setQuestions] = useState([]);
+  // const [questions, setQuestions] = useState([]);
+  const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
@@ -100,11 +101,27 @@ export const GlobalProvider = ({ children }) => {
 
   const addQuestions = async (id, body, options, marks, answer) => {
     try {
-      await axiosInstance.post(`/questions/create/${id}`, body, options, marks, answer);
+      await axiosInstance.post(
+        `/questions/create/${id}`,
+        body,
+        options,
+        marks,
+        answer
+      );
 
       fetchSelectedSubject();
     } catch (error) {
       console.log("Error adding question", error);
+    }
+  };
+
+  const fetchStudents = async () => {
+    try {
+      const response = await axiosInstance.get("/students/get");
+
+      setStudents(response.data.data);
+    } catch (error) {
+      console.log("Error fetching students", error);
     }
   };
 
@@ -124,6 +141,7 @@ export const GlobalProvider = ({ children }) => {
         selectedSubject,
         fetchSelectedSubject,
         addQuestions,
+        students,
       }}
     >
       {children}
