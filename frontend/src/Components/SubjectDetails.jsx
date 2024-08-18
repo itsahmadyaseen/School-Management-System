@@ -3,10 +3,15 @@ import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 import AddQuestionModal from "./AddQuestionModal";
 
-const SubjectDetails = () => { 
+const SubjectDetails = () => {
   const { id } = useParams();
-  const { fetchSelectedSubject, selectedSubject, loading, error, addQuestion } =
-    useGlobalContext();
+  const {
+    fetchSelectedSubject,
+    selectedSubject,
+    loading,
+    error,
+    addQuestions,
+  } = useGlobalContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -15,7 +20,17 @@ const SubjectDetails = () => {
   }, []);
 
   const handleAddQuestion = (body, options, marks, answer) => {
-    addQuestion(id, body, options, marks, answer);
+    const classId = selectedSubject?.class?._id;
+    console.log( classId);
+    
+    addQuestions(
+      id,
+      body,
+      options,
+      marks,
+      answer,
+      classId
+    );
   };
 
   const handleClick = () => {

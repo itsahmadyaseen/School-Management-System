@@ -82,10 +82,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchSelectedSubject = useCallback(async (id) => {
     try {
-      console.log("inside");
 
       const response = await axiosInstance.get(`/subjects/get/${id}`);
-      console.log("response subject", response.data.data);
+      // console.log("response subject", response.data.data);
 
       setSelectedSubject(response.data.data);
       setLoading(false);
@@ -99,17 +98,27 @@ export const GlobalProvider = ({ children }) => {
 
   // QUESTIONS
 
-  const addQuestions = async (id, body, options, marks, answer) => {
+  const addQuestions = async (
+    id,
+    body,
+    options,
+    marks,
+    answer,
+    classId
+  ) => {
     try {
-      await axiosInstance.post(
-        `/questions/create/${id}`,
+      console.log('inside', id);
+      
+
+      await axiosInstance.post(`/questions/create/${id}`, {
         body,
         options,
         marks,
-        answer
-      );
+        answer,
+        classId,
+      });
 
-      fetchSelectedSubject();
+      fetchSelectedSubject(id);
     } catch (error) {
       console.log("Error adding question", error);
     }
@@ -151,6 +160,6 @@ export const GlobalProvider = ({ children }) => {
 
 export const useGlobalContext = () => {
   const context = useContext(GlobalContext);
-  console.log("Global Context:", context);
+  // console.log("Global Context:", context);
   return context;
 };

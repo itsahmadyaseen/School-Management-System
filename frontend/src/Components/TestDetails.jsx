@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axiosInstance from "../axiosInstance";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 
 const TestDetails = () => {
@@ -90,7 +89,7 @@ const TestDetails = () => {
               {selectedTest.questions?.map((question, index) => (
                 <li
                   key={question._id}
-                  className="bg-gray-50 rounded-lg p-4 shadow"
+                  className="bg-gray-50 rounded-lg  p-4 shadow"
                 >
                   <p className="font-medium text-gray-800">
                     {index + 1}. {question.body}

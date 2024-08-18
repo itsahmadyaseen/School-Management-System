@@ -3,7 +3,10 @@ import Subject from "../models/subject.model.js";
 
 export const createQuestion = async (req, res) => {
   const { body, options, answer, marks, classId } = req.body;
-  const { subjectId } = req.params.subjectId;
+  const subjectId  = req.params.subjectId;
+  console.log(subjectId, classId);
+
+  
 
   try {
     const newQuestion = new Question({
