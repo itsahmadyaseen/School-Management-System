@@ -15,6 +15,12 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["teacher", "student"],
+      default: "student",
+      required: true,
+    },
     class: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Class",
