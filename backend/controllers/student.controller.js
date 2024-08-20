@@ -57,10 +57,10 @@ export const login = async (req, res) => {
           expiresIn: "1d",
         });
         res.cookie("token", token);
-        console.log("Logged in successfully", token);
+        console.log("Logged in successfully", authClaims);
         return res
           .status(200)
-          .json({ message: "Logged in successfully", token });
+          .json({ message: "Logged in successfully", token, id:existingUser.id, role:"student" });
       } else {
         console.log("Invalid credentials ");
         return res.status(401).json({ message: "Invalid credentials" });

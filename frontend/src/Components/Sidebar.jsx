@@ -5,6 +5,7 @@ import axiosInstance from "../axiosInstance";
 const Sidebar = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
+  const role = localStorage.getItem("role");
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/students/logout");
@@ -33,7 +34,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-3 p-1 hover:border rounded-md   hover:bg-cyan-700">
-          <Link to="/test" className="">
+          <Link to={role == 'student' ? "/student/test" : "/student/test"} className="">
             Test
           </Link>
         </li>

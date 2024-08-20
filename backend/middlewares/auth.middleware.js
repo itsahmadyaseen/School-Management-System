@@ -8,7 +8,7 @@ const verifyJWT = async (req, res, next) => {
     return res.status(401).json({ message: "Provide token", data: error });
   }
   try {
-    const decodedToken = await jwt.verify(token, process.env.SECRET_KEY);
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     if (!decodedToken) {
       console.log("Forbidden verification", decodedToken);
       return res

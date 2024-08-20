@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 import AddQuestionModal from "./AddQuestionModal";
 
-const SubjectDetails = () => {
+const SubjectDetails_Teacher = () => {
   const { id } = useParams();
   const {
     fetchSelectedSubject,
@@ -21,16 +21,9 @@ const SubjectDetails = () => {
 
   const handleAddQuestion = (body, options, marks, answer) => {
     const classId = selectedSubject?.class?._id;
-    console.log( classId);
-    
-    addQuestions(
-      id,
-      body,
-      options,
-      marks,
-      answer,
-      classId
-    );
+    console.log(classId);
+
+    addQuestions(id, body, options, marks, answer, classId);
   };
 
   const handleClick = () => {
@@ -84,7 +77,7 @@ const SubjectDetails = () => {
           </div>
 
           <div className="flex justify-between w-full px-4 ml-6">
-            <ul className="space-y-4">
+            <ul className="space-y-4 w-4/5">
               {selectedSubject.questions?.map((question, index) => (
                 <li
                   key={question._id}
@@ -122,4 +115,4 @@ const SubjectDetails = () => {
   );
 };
 
-export default SubjectDetails;
+export default SubjectDetails_Teacher;

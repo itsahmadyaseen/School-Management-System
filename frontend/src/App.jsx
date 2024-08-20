@@ -1,14 +1,15 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import React from "react";
-import Test from "./Components/Test";
 import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 import Sidebar from "./Components/Sidebar";
 import TestDetails from "./Components/TestDetails";
 import { GlobalProvider } from "./Context/GlobalContext";
 import Subjects from "./Components/Subjects";
-import SubjectDetails from "./Components/SubjectDetails";
+import Test_Student from "./Student/Test_Student";
+import Test_Teacher from "./Teacher/Test_Teacher";
+import SubjectDetails_Student from "./Student/SubjectDetails_Student";
+import SubjectDetails_Teacher from "./Teacher/SubjectDetails_Teacher";
 
 const AppRoutes = () => {
   return (
@@ -20,10 +21,12 @@ const AppRoutes = () => {
       {/* Main content area should take the remaining width */}
       <div className="flex-grow">
         <Routes>
-          <Route path="/test" element={<Test />} />
+          <Route path="/student/test" element={<Test_Student />} />
+          <Route path="/teacher/test" element={<Test_Teacher />} />
           <Route path="/test/:id" element={<TestDetails />} />
           <Route path="/subjects" element={<Subjects />} />
-          <Route path="/subjects/:id" element={<SubjectDetails />} />
+          <Route path="/student/subjects/:id" element={<SubjectDetails_Student />} />
+          <Route path="/teacher/subjects/:id" element={<SubjectDetails_Teacher />} />
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

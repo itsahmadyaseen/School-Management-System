@@ -2,23 +2,16 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 
-const Subjects = () => {
+const Subjects_Student = () => {
   const { fetchSubjects, subjects, loading, error } = useGlobalContext();
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     fetchSubjects();
   }, []);
 
   const handleClick = (subjectId) => {
-    console.log(role);
-
-    navigate(
-      role == "student"
-        ? `/student/subjects/${subjectId}`
-        : `/teacher/subjects/${subjectId}`
-    );
+    navigate(`/subjects/${subjectId}`);
   };
 
   if (loading) {
@@ -62,4 +55,4 @@ const Subjects = () => {
   );
 };
 
-export default Subjects;
+export default Subjects_Student;

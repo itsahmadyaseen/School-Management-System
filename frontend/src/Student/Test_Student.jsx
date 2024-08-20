@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axiosInstance from "../axiosInstance";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 
-const Tests = () => {
+const Test_Student = () => {
   const { fetchTests, tests, loading, error } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -61,4 +60,4 @@ const Tests = () => {
   );
 };
 
-export default Tests;
+export default Test_Student;
