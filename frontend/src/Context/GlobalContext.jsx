@@ -10,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [selectedTest, setSelectedTest] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
   // const [questions, setQuestions] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -83,7 +84,6 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchSelectedSubject = useCallback(async (id) => {
     try {
-
       const response = await axiosInstance.get(`/subjects/get/${id}`);
       // console.log("response subject", response.data.data);
 
@@ -99,17 +99,9 @@ export const GlobalProvider = ({ children }) => {
 
   // QUESTIONS
 
-  const addQuestions = async (
-    id,
-    body,
-    options,
-    marks,
-    answer,
-    classId
-  ) => {
+  const addQuestions = async (id, body, options, marks, answer, classId) => {
     try {
-      console.log('inside', id);
-      
+      console.log("inside", id);
 
       await axiosInstance.post(`/questions/create/${id}`, {
         body,
@@ -125,15 +117,17 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const fetchStudents = async () => {
+  const fetchClasses = useCallback(async () => {
     try {
-      const response = await axiosInstance.get("/students/get");
-
-      setStudents(response.data.data);
+      setLoading(true);
+      const response = await axiosInstance.get("/classes/get-classes");
+      setClasses(response.data.data);
     } catch (error) {
-      console.log("Error fetching students", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -152,6 +146,8 @@ export const GlobalProvider = ({ children }) => {
         fetchSelectedSubject,
         addQuestions,
         students,
+        classes,
+        fetchClasses,
       }}
     >
       {children}

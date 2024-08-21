@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup_Student = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -18,10 +18,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const response = await axios.post(
-        "students/register",
-        formData
-      );
+      const response = await axios.post("students/register", formData);
 
       console.log("User signed up", response.data);
       navigate("/login");
@@ -33,7 +30,7 @@ const Signup = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-3 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Sign Up</h1>
+        <h1 className="text-2xl font-bold text-center">Student - Sign Up</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm">Username</label>
@@ -93,8 +90,19 @@ const Signup = () => {
         <div className="text-center">
           <p className="text-sm">
             Already have an account?{" "}
-            <Link to="/login" className="text-indigo-600 hover:underline">
+            <Link to="/student/login" className="text-indigo-600 hover:underline">
               Log In
+            </Link>
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-sm">
+            Signup as a teacher?{" "}
+            <Link
+              to="/teacher/signup"
+              className="text-indigo-600 hover:underline"
+            >
+              Teacher
             </Link>
           </p>
         </div>
@@ -103,4 +111,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signup_Student;

@@ -101,7 +101,7 @@ const Login_Teacher = () => {
             Don't have an account?{" "}
             <button
               className="text-indigo-600 hover:underline"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/teacher/signup")}
             >
               Sign Up
             </button>

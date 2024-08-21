@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Signup from "./Components/Signup";
 import Sidebar from "./Components/Sidebar";
 import TestDetails from "./Components/TestDetails";
 import { GlobalProvider } from "./Context/GlobalContext";
@@ -11,6 +10,8 @@ import SubjectDetails_Student from "./Student/SubjectDetails_Student";
 import SubjectDetails_Teacher from "./Teacher/SubjectDetails_Teacher";
 import Login_Teacher from "./Teacher/Login_Teacher";
 import Login_Student from "./Student/Login_Student";
+import Signup_Student from "./Student/Signup_Student";
+import Signup_Teacher from "./Teacher/Signup_Teacher";
 
 const AppRoutes = () => {
   return (
@@ -29,7 +30,8 @@ const AppRoutes = () => {
           <Route path="/student/subjects/:id" element={<SubjectDetails_Student />} />
           <Route path="/teacher/subjects/:id" element={<SubjectDetails_Teacher />} />
 
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/student/signup" element={<Signup_Student />} />
+          <Route path="/teacher/signup" element={<Signup_Teacher />} />
           <Route path="/teacher/login" element={<Login_Teacher />} />
           <Route path="/student/login" element={<Login_Student />} />
         </Routes>
