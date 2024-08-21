@@ -15,7 +15,7 @@ const Sidebar = () => {
       localStorage.removeItem("id");
       localStorage.removeItem("username");
       localStorage.removeItem("role");
-      navigate("/login");
+      navigate(role == "student" ? "/student/login" : "/teacher/login");
     } catch (error) {
       console.log("Error logging out", error);
     }
@@ -34,7 +34,10 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-3 p-1 hover:border rounded-md   hover:bg-cyan-700">
-          <Link to={role == 'student' ? "/student/test" : "/student/test"} className="">
+          <Link
+            to={role == "student" ? "/student/test" : "/teacher/test"}
+            className=""
+          >
             Test
           </Link>
         </li>

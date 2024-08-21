@@ -62,7 +62,7 @@ export const login = async (req, res) => {
           .status(200)
           .json({ message: "Logged in successfully", token, id:existingUser.id, role:"student" });
       } else {
-        console.log("Invalid credentials ");
+        console.log("Invalid credentials");
         return res.status(401).json({ message: "Invalid credentials" });
       }
     });

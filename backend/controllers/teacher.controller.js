@@ -2,6 +2,7 @@ import Class from "../models/class.model.js";
 import Teacher from "../models/teacher.model.js";
 import TeacherIdentifier from "../models/teacherIdentifier.model.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { uid, email, password, fullname, classId } = req.body;
@@ -27,12 +28,10 @@ export const register = async (req, res) => {
 
     if (alreadyHaveATeacher) {
       console.log("This class already has its teacher registered");
-      return res
-        .status(400)
-        .json({
-          message: "This class already has its teacher registerd",
-          data: alreadyHaveATeacher,
-        });
+      return res.status(400).json({
+        message: "This class already has its teacher registerd",
+        data: alreadyHaveATeacher,
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 8);
@@ -71,14 +70,21 @@ export const login = async (req, res) => {
       console.log("Teacher does not exist ");
       return res.status(400).json({ message: "Teacher does not exist" });
     }
+    console.log("password", existingUser.password);
+    console.log(password);
 
-    bcrypt.compare(existingUser.password, password, (err, data) => {
+    bcrypt.compare(password, existingUser.password, (err, data) => {
       if (data) {
         const authClaims = { id: existingUser._id, role: "teacher" };
         const token = jwt.sign(authClaims, process.env.SECRET_KEY, {
           expiresIn: "1d",
         });
         res.cookie("token", token);
+
+        console.log("Logged in successfully", token);
+        return res
+          .status(200)
+          .json({ message: "Logged in successfully", token });
       } else {
         console.log("Invalid credentials ", err);
         return res
@@ -86,9 +92,6 @@ export const login = async (req, res) => {
           .json({ message: "Invalid credentials", data: err });
       }
     });
-
-    console.log("Logged in successfully", token);
-    return res.status(200).json({ message: "Logged in successfully", token });
   } catch (error) {
     console.log("Error logging in", error);
     return res.status(500).json({ message: "Error logging in", error });

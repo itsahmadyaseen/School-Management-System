@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // import axiosInstance from "../axiosInstance";
 import axios from "axios";
 
-const Login = () => {
+const Login_Student = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -32,12 +32,12 @@ const Login = () => {
       const token = response.data.token;
       const id = response.data.id;
       const role = response.data.role;
-    //   const username = response.data.username;
-      
+      //   const username = response.data.username;
+
       localStorage.setItem("id", id);
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-    //   localStorage.setItem('username', username);
+      //   localStorage.setItem('username', username);
       console.log("token: ", token);
 
       //cookie approach
@@ -63,10 +63,10 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-3 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Log In</h1>
+        <h1 className="text-2xl font-bold text-center">Student - Log In</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm">email</label>
+            <label className="block text-sm">Email</label>
             <input
               type="email"
               name="email"
@@ -107,9 +107,20 @@ const Login = () => {
             </button>
           </p>
         </div>
+        <div className="text-center">
+          <p className="text-sm">
+            Login as a teacher?{" "}
+            <button
+              className="text-indigo-600 hover:underline"
+              onClick={() => navigate("/teacher/login")}
+            >
+              Login
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Login_Student;
