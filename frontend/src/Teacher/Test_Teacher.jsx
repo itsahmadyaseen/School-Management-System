@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
+import AddTestModal from "./AddTestModal.jsx";
 
 const Test_Teacher = () => {
-  const { fetchTests, tests, loading, error } = useGlobalContext();
+  const { fetchTests, tests, loading, error, addTest } = useGlobalContext();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTests();
@@ -12,6 +14,14 @@ const Test_Teacher = () => {
 
   const handleClick = (testId) => {
     navigate(`/test/${testId}`);
+  };
+
+  const handleCreate = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleAddTest = (name, classId, subjectId, startTime, endTime) => {
+    addTest(name, classId, subjectId, startTime, endTime);
   };
 
   if (loading) {
@@ -26,9 +36,23 @@ const Test_Teacher = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen  bg-cyan-950 p-8">
-      <h1 className="text-3xl font-bold text-center text-gray-300 mb-8">
-        Tests
-      </h1>
+      <div className="flex justify-between w-full p-4">
+        <div></div>
+        <div className="">
+          <h1 className="text-3xl font-bold text-center text-gray-300 mb-8">
+            Tests
+          </h1>
+        </div>
+
+        <div className="">
+          <button
+            className="text-2xl font-bold text-cyan-100 mb-8 border-2  rounded-md p-2"
+            onClick={()=>handleCreate()}
+          >
+            Create Test
+          </button>
+        </div>
+      </div>
       <div className="max-w-full mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {tests.length > 0 ? (
           tests.map((test) => (
@@ -56,6 +80,11 @@ const Test_Teacher = () => {
           <p>No tests available</p>
         )}
       </div>
+      <AddTestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddTest={handleAddTest}
+      />
     </div>
   );
 };

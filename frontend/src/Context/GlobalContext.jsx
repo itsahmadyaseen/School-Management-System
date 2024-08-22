@@ -70,10 +70,10 @@ export const GlobalProvider = ({ children }) => {
 
   // SUBJECT --
 
-  const fetchSubjects = useCallback(async () => {
+  const fetchSubjects = useCallback(async (subjectId) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get("/subjects/get");
+      const response = await axiosInstance.get(`/subjects/get-subjects/${subjectId}`);
       setSubjects(response.data.data);
     } catch (error) {
       setError(error.message);
@@ -129,6 +129,21 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
+  const addTest = async (name, classId, subjectId, startTime, endTime) => {
+    try {
+      await axiosInstance.post(`/tests/create`, {
+        name,
+        classId,
+        subjectId,
+        startTime,
+        endTime,
+      });
+      await fetchTests();
+    } catch (error) {
+      console.log("Error creating test : ", error);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -148,6 +163,7 @@ export const GlobalProvider = ({ children }) => {
         students,
         classes,
         fetchClasses,
+        addTest,
       }}
     >
       {children}

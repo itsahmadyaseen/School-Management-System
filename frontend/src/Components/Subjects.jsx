@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 
 const Subjects = () => {
@@ -7,8 +7,11 @@ const Subjects = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
+  console.log(classId);
+  
+
   useEffect(() => {
-    fetchSubjects();
+    fetchSubjects(classId);
   }, []);
 
   const handleClick = (subjectId) => {

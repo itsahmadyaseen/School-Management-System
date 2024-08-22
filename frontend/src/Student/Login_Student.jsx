@@ -39,6 +39,8 @@ const Login_Student = () => {
       localStorage.setItem("role", role);
       //   localStorage.setItem('username', username);
       console.log("token: ", token);
+      console.log("id: ", id);
+      console.log("role: ", role);
 
       //cookie approach
 
