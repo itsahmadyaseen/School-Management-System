@@ -3,16 +3,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 
 const Subjects = () => {
-  const { fetchSubjects, subjects, loading, error } = useGlobalContext();
+  const { fetchSubjects, subjects, loading, error, userDetails, fetchUsers } =
+    useGlobalContext();
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
-  console.log(classId);
-  
-
   useEffect(() => {
-    fetchSubjects(classId);
-  }, []);
+    fetchUsers();
+  }, []); // Run once on mount to fetch user details
+  
+  useEffect(() => {
+    if (userDetails && userDetails.class) {  // Check if userDetails and classId exist
+      const classId = userDetails.class;
+      // console.log("userDetails", userDetails);
+      // console.log("in subject", classId);
+      fetchSubjects(classId);
+    }
+  }, [userDetails]); 
 
   const handleClick = (subjectId) => {
     console.log(role);

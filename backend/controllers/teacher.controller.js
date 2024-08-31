@@ -84,7 +84,12 @@ export const login = async (req, res) => {
         console.log("Logged in successfully", token);
         return res
           .status(200)
-          .json({ message: "Logged in successfully", token });
+          .json({
+            message: "Logged in successfully",
+            token,
+            id: existingUser._id,
+            role: "teacher",
+          });
       } else {
         console.log("Invalid credentials ", err);
         return res
@@ -106,6 +111,23 @@ export const getTeachers = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Fetched Teachers", data: teachers });
+  } catch (error) {
+    console.log("Error fetching Teachers", error);
+    return res
+      .status(500)
+      .json({ message: "Error fetching Teachers", data: error });
+  }
+};
+
+export const getTeacherById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    console.log(id);
+    
+    const teacher = await Teacher.findById(id);
+
+    console.log("Fetched Teacher", teacher);
+    return res.status(200).json({ message: "Fetched Teacher", data: teacher });
   } catch (error) {
     console.log("Error fetching Teachers", error);
     return res

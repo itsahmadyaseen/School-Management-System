@@ -60,7 +60,12 @@ export const login = async (req, res) => {
         console.log("Logged in successfully", authClaims);
         return res
           .status(200)
-          .json({ message: "Logged in successfully", token, id:existingUser.id, role:"student" });
+          .json({
+            message: "Logged in successfully",
+            token,
+            id: existingUser.id,
+            role: "student",
+          });
       } else {
         console.log("Invalid credentials");
         return res.status(401).json({ message: "Invalid credentials" });
@@ -87,6 +92,21 @@ export const getStudents = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error fetching Student", data: error });
+  }
+};
+
+export const getStudentById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const student = await Student.findById(id);
+
+    console.log("Fetched Student", student);
+    return res.status(200).json({ message: "Fetched Student", data: student });
+  } catch (error) {
+    console.log("Error fetching Students", error);
+    return res
+      .status(500)
+      .json({ message: "Error fetching Students", data: error });
   }
 };
 

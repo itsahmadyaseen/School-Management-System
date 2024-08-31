@@ -6,6 +6,11 @@ import { useNavigate } from "react-router-dom";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
+  const role = localStorage.getItem("role");
+  const id = localStorage.getItem("id");
+
+  const [userDetails, setUserDetails] = useState([]);
+
   const [tests, setTests] = useState([]);
   const [selectedTest, setSelectedTest] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
@@ -18,6 +23,22 @@ export const GlobalProvider = ({ children }) => {
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
 
   const navigate = useNavigate();
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      // console.log(id);
+
+      const response =
+        role == "teacher"
+          ? await axiosInstance.post("/teachers/teacher", { id })
+          : await axiosInstance.post("/students/student", { id });
+
+      // console.log(response.data);
+      setUserDetails(response.data.data);
+    } catch (error) {
+      console.log("Error fetching user details", error);
+    }
+  }, []);
 
   const fetchTests = useCallback(async () => {
     try {
@@ -70,10 +91,14 @@ export const GlobalProvider = ({ children }) => {
 
   // SUBJECT --
 
-  const fetchSubjects = useCallback(async (subjectId) => {
+  const fetchSubjects = useCallback(async (classId) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get(`/subjects/get-subjects/${subjectId}`);
+      // console.log("class in fetch subjects", classId);
+
+      const response = await axiosInstance.get(
+        `/subjects/get-subjects/${classId}`
+      );
       setSubjects(response.data.data);
     } catch (error) {
       setError(error.message);
@@ -101,7 +126,7 @@ export const GlobalProvider = ({ children }) => {
 
   const addQuestions = async (id, body, options, marks, answer, classId) => {
     try {
-      console.log("inside", id);
+      // console.log("inside", id);
 
       await axiosInstance.post(`/questions/create/${id}`, {
         body,
@@ -164,6 +189,10 @@ export const GlobalProvider = ({ children }) => {
         classes,
         fetchClasses,
         addTest,
+        fetchUsers,
+        userDetails,
+        role,
+        id,
       }}
     >
       {children}

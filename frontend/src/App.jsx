@@ -26,7 +26,7 @@ const AppRoutes = () => {
           <Route path="/student/test" element={<Test_Student />} />
           <Route path="/teacher/test" element={<Test_Teacher />} />
           <Route path="/test/:id" element={<TestDetails />} />
-          <Route path="/subjects" element={<Subjects />} />
+          <Route path="/subjects/:classId" element={<Subjects />} />
           <Route path="/student/subjects/:id" element={<SubjectDetails_Student />} />
           <Route path="/teacher/subjects/:id" element={<SubjectDetails_Teacher />} />
 

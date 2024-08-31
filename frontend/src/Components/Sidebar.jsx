@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
+import { useGlobalContext } from "../Context/GlobalContext";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
-  const role = localStorage.getItem("role");
+  const { role, userDetails, fetchUsers } = useGlobalContext();
+  const [classId, setClassId] = useState("");
+
+  useEffect(() => {
+    fetchUsers();
+    setClassId(userDetails.class)
+  }, []);
+
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/students/logout");
@@ -25,7 +32,7 @@ const Sidebar = () => {
     <div className="h-screen w-64  text-white  fixed  p-6 text-lg">
       <div className="text-center  mb-8">
         <h1 className="text-2xl font-bold">SMS</h1>
-        <h1 className="mt-2">{username}</h1>
+        <h1 className="mt-2"></h1>
       </div>
       <ul>
         <li className="mb-3 p-1 hover:border rounded-md  hover:bg-cyan-700">
@@ -42,7 +49,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li className="mb-3 p-1 hover:border rounded-md   hover:bg-cyan-700">
-          <Link to="/subjects" className="">
+          <Link to={`/subjects/${classId}`} className="">
             Subjects
           </Link>
         </li>
