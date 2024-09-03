@@ -17,8 +17,8 @@ const Sidebar = () => {
     try {
       await axiosInstance.post("/students/logout");
       console.log("User logged out");
-
-      localStorage.removeItem("token");
+ 
+     localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("username");
       localStorage.removeItem("role");
