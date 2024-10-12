@@ -23,6 +23,7 @@ app.use(
 );
 connection();
 
+
 app.use("/api/v1/students", studentRoutes);
 app.use("/api/v1/teachers", teacherRoutes);
 app.use("/api/v1/classes", classRoutes);

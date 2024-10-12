@@ -1,6 +1,4 @@
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Sidebar from "./Components/Sidebar";
 import TestDetails from "./Components/TestDetails";
 import { GlobalProvider } from "./Context/GlobalContext";
 import Subjects from "./Components/Subjects";
@@ -12,24 +10,36 @@ import Login_Teacher from "./Teacher/Login_Teacher";
 import Login_Student from "./Student/Login_Student";
 import Signup_Student from "./Student/Signup_Student";
 import Signup_Teacher from "./Teacher/Signup_Teacher";
+import SidebarMain from "./Components/SidebarMain";
+import Navbar from "./Components/Navbar";
 
 const AppRoutes = () => {
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar should take a fixed width */}
-      <div className="w-64 bg-cyan-900">
-        <Sidebar />
-      </div>
-      {/* Main content area should take the remaining width */}
-      <div className="flex-grow">
+    {/* Sidebar */}
+    <div className="sidebar">
+      <SidebarMain />
+    </div>
+
+    {/* Main Content Area */}
+    <div className="main-content flex-grow ml-72">
+      {/* Navbar should be placed inside main-content to span correctly */}
+      <Navbar  />
+      {/* Content Area */}
+      <div className="content p-5 w-full h-[calc(100%-64px)] overflow-auto">
         <Routes>
           <Route path="/student/test" element={<Test_Student />} />
           <Route path="/teacher/test" element={<Test_Teacher />} />
           <Route path="/test/:id" element={<TestDetails />} />
           <Route path="/subjects/:classId" element={<Subjects />} />
-          <Route path="/student/subjects/:id" element={<SubjectDetails_Student />} />
-          <Route path="/teacher/subjects/:id" element={<SubjectDetails_Teacher />} />
-
+          <Route
+            path="/student/subjects/:id"
+            element={<SubjectDetails_Student />}
+          />
+          <Route
+            path="/teacher/subjects/:id"
+            element={<SubjectDetails_Teacher />}
+          />
           <Route path="/student/signup" element={<Signup_Student />} />
           <Route path="/teacher/signup" element={<Signup_Teacher />} />
           <Route path="/teacher/login" element={<Login_Teacher />} />
@@ -37,6 +47,7 @@ const AppRoutes = () => {
         </Routes>
       </div>
     </div>
+  </div>
   );
 };
 
@@ -52,3 +63,4 @@ function App() {
 }
 
 export default App;
+

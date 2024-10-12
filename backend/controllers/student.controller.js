@@ -2,6 +2,9 @@ import jwt from "jsonwebtoken";
 import Student from "../models/student.model.js";
 import Class from "../models/class.model.js";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const register = async (req, res) => {
   const { email, password, fullname, classId } = req.body;
@@ -30,7 +33,7 @@ export const register = async (req, res) => {
       },
     });
 
-    console.log("Student registerd :", newStudent);
+    console.log("Student registerd");
     return res
       .status(201)
       .json({ message: "Student registerd", data: newStudent });
@@ -42,11 +45,13 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    console.log(process.env.PASETO_SECRET_KEY);
+
     const { email, password } = req.body;
 
     const existingUser = await Student.findOne({ email });
     if (!existingUser) {
-      console.log("Student does not exist ");
+      console.log("Student does not exist");
       return res.status(400).json({ message: "Student does not exist" });
     }
 
@@ -58,14 +63,12 @@ export const login = async (req, res) => {
         });
         res.cookie("token", token);
         console.log("Logged in successfully", authClaims);
-        return res
-          .status(200)
-          .json({
-            message: "Logged in successfully",
-            token,
-            id: existingUser.id,
-            role: "student",
-          });
+        return res.status(200).json({
+          message: "Logged in successfully",
+          token,
+          id: existingUser.id,
+          role: "student",
+        });
       } else {
         console.log("Invalid credentials");
         return res.status(401).json({ message: "Invalid credentials" });

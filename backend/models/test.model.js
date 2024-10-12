@@ -34,11 +34,12 @@ const testSchema = new mongoose.Schema(
 
     endTime: {
       type: Date,
+      required: true,
     },
 
     isActive: {
       type: Boolean,
-      default: false,
+      required: true,
     },
 
     maxMarks: {

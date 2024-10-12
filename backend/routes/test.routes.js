@@ -4,7 +4,7 @@ import verifyJWT from "../middlewares/auth.middleware.js";
 
 const router = new Router();
 
-router.post("/create", createTest);
+router.post("/create", verifyJWT, createTest);
 router.get("/get", getTests);
 router.get("/get/:testId", verifyJWT, getTestById);
 

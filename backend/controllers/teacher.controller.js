@@ -75,21 +75,23 @@ export const login = async (req, res) => {
 
     bcrypt.compare(password, existingUser.password, (err, data) => {
       if (data) {
-        const authClaims = { id: existingUser._id, role: "teacher" };
+        const authClaims = {
+          id: existingUser._id,
+          role: "teacher",
+          classId: existingUser.class,
+        };
         const token = jwt.sign(authClaims, process.env.SECRET_KEY, {
           expiresIn: "1d",
         });
         res.cookie("token", token);
 
         console.log("Logged in successfully", token);
-        return res
-          .status(200)
-          .json({
-            message: "Logged in successfully",
-            token,
-            id: existingUser._id,
-            role: "teacher",
-          });
+        return res.status(200).json({
+          message: "Logged in successfully",
+          token,
+          id: existingUser._id,
+          role: "teacher",
+        });
       } else {
         console.log("Invalid credentials ", err);
         return res
@@ -123,7 +125,7 @@ export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.body;
     console.log(id);
-    
+
     const teacher = await Teacher.findById(id);
 
     console.log("Fetched Teacher", teacher);

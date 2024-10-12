@@ -25,7 +25,7 @@ const Test_Student = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen  bg-cyan-950 p-8">
+    <div style={{backgroundColor:'#90A28D'}} className="flex flex-col items-center min-h-screen   p-8">
       <h1 className="text-3xl font-bold text-center text-gray-300 mb-8">
         Tests
       </h1>

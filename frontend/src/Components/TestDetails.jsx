@@ -64,19 +64,20 @@ const TestDetails = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 py-8">
+    <div  className="h-full flex flex-col items-center rounded-md p-4" style={{ backgroundColor: "#90A28D" }}>
       {loading ? (
         <p className="text-center text-gray-500">Loading test details...</p>
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
       ) : selectedTest ? (
         <>
-          <h1 className="text-3xl font-bold text-cyan-600 mb-8">
+          <h1 className="text-3xl font-bold text-white mb-8">
             {selectedTest.name}
           </h1>
           <form
             onSubmit={handleSubmit}
-            className="min-w-full bg-white rounded-lg shadow-lg p-6"
+            className="w-full shadow-lg p-6" 
+            style={{ backgroundColor: "#90A28D" }}
           >
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Subject: {selectedTest.subject?.name}

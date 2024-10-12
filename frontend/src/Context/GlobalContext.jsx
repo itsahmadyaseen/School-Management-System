@@ -91,15 +91,13 @@ export const GlobalProvider = ({ children }) => {
 
   // SUBJECT --
 
-  const fetchSubjects = useCallback(async (classId) => {
+  const fetchSubjects = useCallback(async () => {
     try {
       setLoading(true);
-      // console.log("class in fetch subjects", classId);
 
-      const response = await axiosInstance.get(
-        `/subjects/get-subjects/${classId}`
-      );
+      const response = await axiosInstance.get(`/subjects/get-subjects`);
       setSubjects(response.data.data);
+      setLoading(false);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -154,11 +152,12 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
-  const addTest = async (name, classId, subjectId, startTime, endTime) => {
+  const addTest = async (name, subjectId, startTime, endTime) => {
+    console.log(name, subjectId, startTime, endTime);
+
     try {
       await axiosInstance.post(`/tests/create`, {
         name,
-        classId,
         subjectId,
         startTime,
         endTime,

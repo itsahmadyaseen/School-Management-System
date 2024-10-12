@@ -47,7 +47,9 @@ export const getSubjects = async (req, res) => {
 
 export const getSubjectsByClass = async (req, res) => {
   try {
-    const classId = req.params.classId;
+    console.log('user details',req.user);
+    
+    const classId = req.user.classId;
 console.log('class id',classId);
 
     const subjects = await Subject.find({ class: classId });
