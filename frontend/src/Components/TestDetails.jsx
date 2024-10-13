@@ -30,6 +30,8 @@ const TestDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(answers);
+    
     submitResponse(id, answers);
   };
 
@@ -64,7 +66,10 @@ const TestDetails = () => {
   }
 
   return (
-    <div  className="h-full flex flex-col items-center rounded-md p-4" style={{ backgroundColor: "#90A28D" }}>
+    <div
+      className="h-full flex flex-col items-center rounded-md p-4"
+      style={{ backgroundColor: "#90A28D" }}
+    >
       {loading ? (
         <p className="text-center text-gray-500">Loading test details...</p>
       ) : error ? (
@@ -76,14 +81,14 @@ const TestDetails = () => {
           </h1>
           <form
             onSubmit={handleSubmit}
-            className="w-full shadow-lg p-6" 
+            className="w-full shadow-lg p-6"
             style={{ backgroundColor: "#90A28D" }}
           >
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Subject: {selectedTest.subject?.name}
             </h2>
-            <p className="text-gray-600 mb-2">{selectedTest.class?.name}</p>
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
+            <p className="text-gray-800 mb-2">{selectedTest.class?.name}</p>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
               Questions:
             </h3>
             <ul className="space-y-4">
@@ -119,7 +124,7 @@ const TestDetails = () => {
             </ul>
             <button
               type="submit"
-              className="mt-6 w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition duration-200"
+              className="mt-6 w-full bg-white text-gray-500 py-2 rounded-lg hover:bg-gray-500 hover:text-white transition duration-300"
             >
               Submit Test
             </button>

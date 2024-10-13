@@ -96,12 +96,15 @@ const Test_Teacher = () => {
                   </td>
                   <td className="py-3 px-6">
                     <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                      className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${
+                        !test.isActive ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent triggering onClick on the row
-                        // handleGiveTestClick(test._id);
+                      
                         handleClick(test._id);
                       }}
+                      // disabled={!test.isActive}
                     >
                       Give Test
                     </button>

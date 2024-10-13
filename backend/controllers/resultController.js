@@ -6,13 +6,9 @@ export const submitResponse = async (req, res) => {
   const { answers, testId } = req.body;
   // console.log("answers : ", answers);
 
- 
-
   if (!answers) {
     console.log("Cannot get answers", answers);
-    return res
-      .status(400)
-      .json({ message: "Cannot get answers", data: answers });
+    return res.status(400).json({ message: "Cannot get answers" });
   }
 
   let marksObtained = 0;

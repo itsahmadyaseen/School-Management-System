@@ -73,6 +73,8 @@ export const GlobalProvider = ({ children }) => {
 
   const submitResponse = async (id, answers) => {
     try {
+      console.log(answers, "answers");
+
       await axiosInstance.post(`/results/submit-response`, {
         testId: id,
         answers,
