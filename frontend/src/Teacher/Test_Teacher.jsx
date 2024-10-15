@@ -104,7 +104,7 @@ const Test_Teacher = () => {
                       
                         handleClick(test._id);
                       }}
-                      // disabled={!test.isActive}
+                      disabled={!test.isActive}
                     >
                       Give Test
                     </button>

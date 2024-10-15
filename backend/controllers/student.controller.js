@@ -45,19 +45,21 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    console.log(process.env.PASETO_SECRET_KEY);
-
     const { email, password } = req.body;
 
     const existingUser = await Student.findOne({ email });
     if (!existingUser) {
       console.log("Student does not exist");
-      return res.status(400).json({ message: "Student does not exist" });
+      return res.status(404).json({ message: "Student does not exist" });
     }
 
     bcrypt.compare(password, existingUser.password, (err, data) => {
       if (data) {
-        const authClaims = { id: existingUser._id, role: "student" };
+        const authClaims = {
+          id: existingUser._id,
+          role: "student",
+          classId: existingUser.class,
+        };
         const token = jwt.sign(authClaims, process.env.SECRET_KEY, {
           expiresIn: "1d",
         });

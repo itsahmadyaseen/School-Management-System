@@ -21,6 +21,8 @@ export const GlobalProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
+  const [result, setResult] = useState([]);
+  const [notGivenExam, setNotGivenExam] = useState(false);
 
   const navigate = useNavigate();
 
@@ -155,8 +157,6 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   const addTest = async (name, subjectId, startTime, endTime) => {
-    console.log(name, subjectId, startTime, endTime);
-
     try {
       await axiosInstance.post(`/tests/create`, {
         name,
@@ -169,6 +169,26 @@ export const GlobalProvider = ({ children }) => {
       console.log("Error creating test : ", error);
     }
   };
+
+  //--- See result
+
+  const seeResult = useCallback(async (testId) => {
+    setLoading(true);
+    setNotGivenExam(false);
+
+    try {
+      const response = await axiosInstance.get(
+        `/results/fetch-result/${testId}`
+      );
+
+      if (response.data.data) setResult(response.data.data);
+      else setNotGivenExam(true);
+    } catch (error) {
+      console.log("Error fetching result", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -194,6 +214,9 @@ export const GlobalProvider = ({ children }) => {
         userDetails,
         role,
         id,
+        seeResult,
+        result,
+        notGivenExam
       }}
     >
       {children}

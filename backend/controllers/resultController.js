@@ -96,3 +96,26 @@ export const generateResult = async (req, res) => {
       .json({ message: "Error generating result ", data: error });
   }
 };
+
+export const fetchResult = async (req, res) => {
+  try {
+    const testId = req.params.testId;
+
+    const resultDetails = await Response.findOne({ test: testId })
+      .populate({
+        path: "answers.question",
+        select: "answer marks",
+      })
+      .select("answers student score");
+
+    console.log(resultDetails);
+    return res
+      .status(200)
+      .json({ message: "Fetched result", data: resultDetails });
+  } catch (error) {
+    console.log("Error fetching results", error);
+    return res
+      .status(500)
+      .json({ message: "Error fetching results", data: error });
+  }
+};
