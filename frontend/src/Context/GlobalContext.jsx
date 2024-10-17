@@ -144,6 +144,22 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const deleteQuestion = async (id, questionId) => {
+    try {
+      console.log("inside", questionId);
+
+      await axiosInstance.delete(`/questions/delete`, {
+        params: { questionId },
+      });
+      fetchSelectedSubject(id);
+      console.log("deketed");
+    } catch (error) {
+      console.log("Error deleting question", error);
+    }
+  };
+
+  //--- CLASS
+
   const fetchClasses = useCallback(async () => {
     try {
       setLoading(true);
@@ -225,6 +241,7 @@ export const GlobalProvider = ({ children }) => {
         selectedSubject,
         fetchSelectedSubject,
         addQuestions,
+        deleteQuestion,
         students,
         classes,
         fetchClasses,

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 import AddQuestionModal from "./AddQuestionModal";
+import { MdDelete } from "react-icons/md";
 
 const SubjectDetails_Teacher = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const SubjectDetails_Teacher = () => {
     loading,
     error,
     addQuestions,
+    deleteQuestion,
   } = useGlobalContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +30,10 @@ const SubjectDetails_Teacher = () => {
 
   const handleClick = () => {
     setIsModalOpen(true);
+  };
+
+  const handleDelete = (questionId) => {
+    deleteQuestion(id, questionId);
   };
 
   if (loading) {
@@ -48,7 +54,7 @@ const SubjectDetails_Teacher = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center py-8"
+      className="h-full flex flex-col items-center rounded-md p-4"
       style={{ backgroundColor: "#90A28D" }}
     >
       {loading ? (
@@ -84,23 +90,32 @@ const SubjectDetails_Teacher = () => {
               {selectedSubject.questions?.map((question, index) => (
                 <li
                   key={question._id}
-                  className="bg-gray-50 rounded-lg p-4 shadow"
+                  className="bg-gray-50 rounded-md p-4 shadow flex justify-between"
                 >
-                  <p className="font-medium text-gray-800">
-                    {index + 1}. {question.body}
-                  </p>
-                  <ul className="mt-2 space-y-1">
-                    {question.options?.map((option, optionIndex) => (
-                      <li key={optionIndex} className="text-gray-600">
-                        <label className="flex items-center">
-                          {optionIndex + 1}. {option}
-                        </label>
-                      </li>
-                    ))}
-                    <p className="mt-2 text-sm text-gray-500">
-                      Marks: {question.marks}
+                  <div>
+                    <p className="font-medium text-gray-800">
+                      {index + 1}. {question.body}
                     </p>
-                  </ul>
+                    <ul className="mt-2 space-y-1">
+                      {question.options?.map((option, optionIndex) => (
+                        <li key={optionIndex} className="text-gray-600">
+                          <label className="flex items-center">
+                            {optionIndex + 1}. {option}
+                          </label>
+                        </li>
+                      ))}
+                      <p className="mt-2 text-sm text-gray-500">
+                        Marks: {question.marks}
+                      </p>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <MdDelete
+                      onClick={() => handleDelete(question._id)}
+                      className="text-red-600 text-3xl cursor-pointer"
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

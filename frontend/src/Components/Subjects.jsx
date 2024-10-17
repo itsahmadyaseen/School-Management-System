@@ -46,27 +46,31 @@ const Subjects = () => {
 
   return (
     <div
-      className="flex flex-col items-center min-h-screen  p-8"
+      className="flex flex-col items-center h-full rounded-md"
       style={{ backgroundColor: "#90A28D" }}
     >
-      <h1 className="text-3xl font-bold text-center text-white mb-8">
-        Subjects
-      </h1>
-      <div className="max-w-full mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="flex justify-center w-full p-4">
+        <h1 className="text-3xl font-bold text-center text-white mb-8">
+          Subjects
+        </h1>
+      </div>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 lg:px-0">
         {subjects.map((subject) => (
           <div
             key={subject._id}
             onClick={() => handleClick(subject._id)}
-            className="bg-white rounded-lg shadow-lg p-6 cursor-pointer"
+            className="bg-white rounded-xl shadow-lg p-6 transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
           >
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
               {subject.name}
             </h2>
-            <p className="text-gray-600">Class: {subject.class.name}</p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-lg mb-2">
+              {subject.class.name}
+            </p>
+            <p className="text-gray-600 text-lg mb-2">
               Questions: {subject.questions.length}
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-500 text-sm">
               Created At: {new Date(subject.createdAt).toLocaleDateString()}
             </p>
           </div>

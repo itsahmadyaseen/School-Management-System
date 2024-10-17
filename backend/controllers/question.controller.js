@@ -3,10 +3,8 @@ import Subject from "../models/subject.model.js";
 
 export const createQuestion = async (req, res) => {
   const { body, options, answer, marks, classId } = req.body;
-  const subjectId  = req.params.subjectId;
+  const subjectId = req.params.subjectId;
   console.log(subjectId, classId);
-
-  
 
   try {
     const newQuestion = new Question({
@@ -14,7 +12,7 @@ export const createQuestion = async (req, res) => {
       options,
       answer,
       marks,
-      subject:subjectId,
+      subject: subjectId,
       class: classId,
     });
 
@@ -46,14 +44,32 @@ export const getQuestions = async (req, res) => {
       })
       .sort({ createdAt: 1 });
 
-    console.log("Questions fetched ", questions);
+    console.log("Questions fetched", questions);
     return res
       .status(200)
-      .json({ message: "Questions fetched ", data: questions });
+      .json({ message: "Questions fetched", data: questions });
   } catch (error) {
-    console.log("Error creating question ", error);
+    console.log("Error creating question", error);
     return res
       .status(500)
       .json({ message: "Error creating question", data: error });
+  }
+};
+
+export const deleteQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.query;
+
+    const question = await Question.findByIdAndDelete(questionId);
+
+    await Question.findByIdAndDelete(questionId);
+    console.log("Question deleted ");
+
+    return res.status(200).json({ message: "Question deleted " });
+  } catch (error) {
+    console.log("Error deleting question ", error);
+    return res
+      .status(500)
+      .json({ message: "Error deleting question", data: error });
   }
 };

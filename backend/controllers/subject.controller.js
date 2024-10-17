@@ -33,7 +33,7 @@ export const getSubjects = async (req, res) => {
       .populate("questions")
       .sort({ createdAt: -1 });
 
-    console.log("Subjects fetched ", subjects);
+    console.log("Subjects fetched ");
     return res
       .status(200)
       .json({ message: "Subjects fetched ", data: subjects });
@@ -47,12 +47,12 @@ export const getSubjects = async (req, res) => {
 
 export const getSubjectsByClass = async (req, res) => {
   try {
-    console.log('user details',req.user);
-    
     const classId = req.user.classId;
-console.log('class id',classId);
 
-    const subjects = await Subject.find({ class: classId });
+    const subjects = await Subject.find({ class: classId }).populate({
+      path: "class",
+      select: "name",
+    });
     console.log("Subjects fetched ", subjects);
     return res
       .status(200)
@@ -81,7 +81,7 @@ export const getSubjectById = async (req, res) => {
 
       .sort({ createdAt: -1 });
 
-    console.log("Subject fetched ", subject);
+    console.log("Subject fetched ");
     return res.status(200).json({ message: "Subject fetched ", data: subject });
   } catch (error) {
     console.log("Error fetching subject ", error);
