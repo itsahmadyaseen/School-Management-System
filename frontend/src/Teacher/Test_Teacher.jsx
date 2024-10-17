@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 import AddTestModal from "./AddTestModal.jsx";
+import TeacherResultModal from "./TeacherResultModal.jsx";
 
 const Test_Teacher = () => {
   const {
@@ -14,7 +15,9 @@ const Test_Teacher = () => {
     subjects,
   } = useGlobalContext();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [testId, setTestId] = useState("");
 
   useEffect(() => {
     fetchTests();
@@ -26,7 +29,7 @@ const Test_Teacher = () => {
   };
 
   const handleCreate = () => {
-    setIsModalOpen(true);
+    setIsAddModalOpen(true);
   };
 
   const handleAddTest = (name, subjectId, startTime, endTime) => {
@@ -95,19 +98,28 @@ const Test_Teacher = () => {
                     {new Date(test.createdAt).toLocaleDateString()}
                   </td>
                   <td className="py-3 px-6">
-                    <button
-                      className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${
-                        !test.isActive ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering onClick on the row
-                      
-                        handleClick(test._id);
-                      }}
-                      disabled={!test.isActive}
-                    >
-                      Give Test
-                    </button>
+                    {!test.isActive ? (
+                      <button
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 }`}
+                        onClick={() => {
+                          setIsResultModalOpen(true);
+                          setTestId(test._id);
+                        }}
+                      >
+                        See result
+                      </button>
+                    ) : (
+                      <button
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700`}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering onClick on the row
+
+                          handleClick(test._id);
+                        }}
+                      >
+                        Give Test
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))
@@ -123,10 +135,15 @@ const Test_Teacher = () => {
       </div>
 
       <AddTestModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         onAddTest={handleAddTest}
         subjects={subjects}
+      />
+      <TeacherResultModal
+        isOpen={isResultModalOpen}
+        onClose={() => setIsResultModalOpen(false)}
+        testId={testId}
       />
     </div>
   );

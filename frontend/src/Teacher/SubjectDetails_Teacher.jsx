@@ -47,16 +47,19 @@ const SubjectDetails_Teacher = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-cyan-700 py-8">
+    <div
+      className="min-h-screen flex flex-col items-center py-8"
+      style={{ backgroundColor: "#90A28D" }}
+    >
       {loading ? (
-        <p className="text-center text-gray-500">Loading test details...</p>
+        <p className="text-center text-gray-500">Loading subjects details...</p>
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
       ) : selectedSubject ? (
         <>
           <div className="flex justify-between w-full px-4 ml-6">
             <div>
-              <h2 className="text-2xl font-bold text-cyan-100 mb-4">
+              <h2 className="text-2xl font-bold text-black mb-4">
                 Subject: {selectedSubject.name}
               </h2>
               <p className="text-gray-900 mb-2 text-lg font-semibold">
@@ -68,7 +71,7 @@ const SubjectDetails_Teacher = () => {
             </div>
             <div className="text-right">
               <button
-                className="text-2xl font-bold text-cyan-100 mb-8 border-2  rounded-md p-2"
+                className="text-2xl font-bold text-gray-100 mb-8 border-2  rounded-md p-2"
                 onClick={handleClick}
               >
                 Add Question

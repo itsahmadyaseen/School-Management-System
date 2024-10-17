@@ -11,6 +11,7 @@ const SidebarMain = () => {
   const [activeItem, setActiveItem] = useState("");
   const navigate = useNavigate();
   const { role } = useGlobalContext();
+  const classId = localStorage.getItem("classId");
 
   const handleLogout = async () => {
     try {
@@ -19,8 +20,8 @@ const SidebarMain = () => {
 
       localStorage.removeItem("token");
       localStorage.removeItem("id");
-      localStorage.removeItem("username");
       localStorage.removeItem("role");
+      localStorage.removeItem("classId");
       navigate(role == "student" ? "/student/login" : "/teacher/login");
     } catch (error) {
       console.log("Error logging out", error);
@@ -40,7 +41,10 @@ const SidebarMain = () => {
         icon={<FiBookOpen size={20} />}
         text={"Subjects"}
         active={activeItem === "Subjects"}
-        onClick={() => setActiveItem("Subjects")}
+        onClick={() => {
+          setActiveItem("Subjects");
+          navigate(`/subjects/${classId}`);
+        }}
       />
       <SidebarItem
         icon={<SiSpeedtest size={20} />}

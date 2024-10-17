@@ -85,7 +85,7 @@ export const getTestById = async (req, res) => {
   try {
     const testId = req.params.testId;
 
-    const alreadySubmitted = await Response.findOne({ student: req.user.id });
+    const alreadySubmitted = await Response.findOne({ student: req.user.id, test:testId });
     if (alreadySubmitted) {
       console.log("User has already submitted", alreadySubmitted);
       return res.status(403).json({

@@ -11,15 +11,16 @@ const Subjects = () => {
   useEffect(() => {
     fetchUsers();
   }, []); // Run once on mount to fetch user details
-  
+
   useEffect(() => {
-    if (userDetails && userDetails.class) {  // Check if userDetails and classId exist
+    if (userDetails && userDetails.class) {
+      // Check if userDetails and classId exist
       const classId = userDetails.class;
       // console.log("userDetails", userDetails);
       // console.log("in subject", classId);
       fetchSubjects(classId);
     }
-  }, [userDetails]); 
+  }, [userDetails]);
 
   const handleClick = (subjectId) => {
     console.log(role);
@@ -44,8 +45,11 @@ const Subjects = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen  bg-cyan-950 p-8">
-      <h1 className="text-3xl font-bold text-center text-gray-300 mb-8">
+    <div
+      className="flex flex-col items-center min-h-screen  p-8"
+      style={{ backgroundColor: "#90A28D" }}
+    >
+      <h1 className="text-3xl font-bold text-center text-white mb-8">
         Subjects
       </h1>
       <div className="max-w-full mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -4,8 +4,7 @@ import { useGlobalContext } from "../Context/GlobalContext.jsx";
 import StudentResultModal from "./StudentResultModal.jsx";
 
 const Test_Student = () => {
-  const { fetchTests, tests, loading, error } =
-    useGlobalContext();
+  const { fetchTests, tests, loading, error } = useGlobalContext();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +15,7 @@ const Test_Student = () => {
   }, []);
 
   const handleClick = (testId) => {
-    navigate(`/test/${testId}`);
+    navigate(`/test/${testId}`); 
   };
 
   if (loading) {
@@ -71,7 +70,7 @@ const Test_Student = () => {
                   <td className="py-3 px-6">
                     {!test.isActive ? (
                       <button
-                        className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 }`}
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 }`}
                         onClick={() => {
                           setIsModalOpen(true);
                           setTestId(test._id);
@@ -81,7 +80,7 @@ const Test_Student = () => {
                       </button>
                     ) : (
                       <button
-                        className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600`}
+                        className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700`}
                         onClick={(e) => {
                           e.stopPropagation(); // Prevent triggering onClick on the row
 

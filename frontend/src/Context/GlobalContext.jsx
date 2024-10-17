@@ -81,7 +81,7 @@ export const GlobalProvider = ({ children }) => {
         testId: id,
         answers,
       });
-      navigate("/results");
+      navigate("/student/test");
 
       // console.log(response.data);
     } catch (error) {
@@ -190,6 +190,25 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
+  const seeResultTeacher = useCallback(async (testId) => {
+    setLoading(true);
+    setNotGivenExam(false);
+
+    try {
+      const response = await axiosInstance.get(
+        `/results/fetch-result-teacher/${testId}`
+      );
+      console.log(response.data.data);
+
+      if (response.data.data) setResult(response.data.data);
+      else setNotGivenExam(true);
+    } catch (error) {
+      console.log("Error fetching result", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -216,7 +235,8 @@ export const GlobalProvider = ({ children }) => {
         id,
         seeResult,
         result,
-        notGivenExam
+        notGivenExam,
+        // seeResultTeacher,
       }}
     >
       {children}

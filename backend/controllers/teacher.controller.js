@@ -70,8 +70,6 @@ export const login = async (req, res) => {
       console.log("Teacher does not exist ");
       return res.status(400).json({ message: "Teacher does not exist" });
     }
-    console.log("password", existingUser.password);
-    console.log(password);
 
     bcrypt.compare(password, existingUser.password, (err, data) => {
       if (data) {
@@ -91,6 +89,7 @@ export const login = async (req, res) => {
           token,
           id: existingUser._id,
           role: "teacher",
+          classId: existingUser.class,
         });
       } else {
         console.log("Invalid credentials ", err);

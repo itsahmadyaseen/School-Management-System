@@ -13,7 +13,7 @@ const verifyJWT = async (req, res, next) => {
     if (!decodedToken) {
       console.log("Forbidden verification", decodedToken);
       return res
-        .status(403)
+        .status(401)
         .json({ message: "Forbidden verification", data: decodedToken });
     }
     req.user = decodedToken;

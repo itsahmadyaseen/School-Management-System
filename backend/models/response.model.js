@@ -19,7 +19,11 @@ const responseSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
     },
-
+    classId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class",
+      required: true,
+    },
     score: {
       type: Number,
     },

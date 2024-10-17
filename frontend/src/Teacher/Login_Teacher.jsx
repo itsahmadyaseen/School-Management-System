@@ -32,14 +32,11 @@ const Login_Teacher = () => {
       const token = response.data.token;
       const id = response.data.id;
       const role = response.data.role;
-    //   const username = response.data.username;
-      
+
       localStorage.setItem("id", id);
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-    //   localStorage.setItem('username', username);
-      console.log("token: ", token);
-
+      localStorage.setItem("classId", response.data.classId);
       //cookie approach
 
       /*
