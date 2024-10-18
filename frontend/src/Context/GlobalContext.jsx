@@ -10,7 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const id = localStorage.getItem("id");
 
   const [userDetails, setUserDetails] = useState([]);
-
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [tests, setTests] = useState([]);
   const [selectedTest, setSelectedTest] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
@@ -138,8 +138,21 @@ export const GlobalProvider = ({ children }) => {
         classId,
       });
 
+      setAlert({
+        show: true,
+        type: "success",
+        message: "Question added successfully!",
+      });
+
       fetchSelectedSubject(id);
     } catch (error) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Error adding question. Please try again.",
+      });
+
+
       console.log("Error adding question", error);
     }
   };
@@ -151,9 +164,30 @@ export const GlobalProvider = ({ children }) => {
       await axiosInstance.delete(`/questions/delete`, {
         params: { questionId },
       });
+
+      setAlert({
+        show: true,
+        type: "success",
+        message: "Question deleted successfully!",
+      });
+      setTimeout(() => {
+        setAlert({ show: false, type: "", message: "" });
+      }, 2000);
+
       fetchSelectedSubject(id);
       console.log("deketed");
     } catch (error) {
+
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Error deleting question. Please try again.",
+      });
+
+      setTimeout(() => {
+        setAlert({ show: false, type: "", message: "" });
+      }, 2000);
+
       console.log("Error deleting question", error);
     }
   };
@@ -206,25 +240,6 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
-  const seeResultTeacher = useCallback(async (testId) => {
-    setLoading(true);
-    setNotGivenExam(false);
-
-    try {
-      const response = await axiosInstance.get(
-        `/results/fetch-result-teacher/${testId}`
-      );
-      console.log(response.data.data);
-
-      if (response.data.data) setResult(response.data.data);
-      else setNotGivenExam(true);
-    } catch (error) {
-      console.log("Error fetching result", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   return (
     <GlobalContext.Provider
       value={{
@@ -254,6 +269,7 @@ export const GlobalProvider = ({ children }) => {
         result,
         notGivenExam,
         // seeResultTeacher,
+        alert,
       }}
     >
       {children}

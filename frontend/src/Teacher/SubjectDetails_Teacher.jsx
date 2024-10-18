@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext";
 import AddQuestionModal from "./AddQuestionModal";
 import { MdDelete } from "react-icons/md";
+import Alert from "../Components/Alert";
 
 const SubjectDetails_Teacher = () => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ const SubjectDetails_Teacher = () => {
     error,
     addQuestions,
     deleteQuestion,
+    alert,
   } = useGlobalContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -129,6 +131,7 @@ const SubjectDetails_Teacher = () => {
       ) : (
         <p className="text-center text-gray-500">No Details found</p>
       )}
+      {alert.show && <Alert className='' type={alert.type} message={alert.message} />}
     </div>
   );
 };
