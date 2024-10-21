@@ -7,6 +7,8 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [subjects, setSubjects] = useState([]);
+  const [type, setType] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   // const { fetchSubjects, subjects } = useGlobalContext();
 
@@ -31,8 +33,17 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
   }, [isOpen]); // This will only call fetchSubjects when `isOpen` changes to true
 
   const handleAddTest = () => {
-    onAddTest(name, subject, startTime, endTime);
+    onAddTest(name, subject, startTime, endTime, selectedFile);
     onClose();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+      setSelectedFile(file);
+    } else {
+      alert("Please upload a valid PDF file");
+    }
   };
 
   if (!isOpen) return null;
@@ -51,23 +62,50 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
           onChange={(e) => setName(e.target.value)}
         />
 
-        <p>Subject</p>
+        <p>Type</p>
         <select
-          name="subject"
+          name="type"
+          value={type}
           className="w-full p-2 border border-gray-300 rounded mb-4"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          id="subject"
+          onChange={(e) => setType(e.target.value)}
+          id="type"
         >
-          <option value="">Select subject</option>
-          {subjects &&
-            subjects.map((sub) => (
-              <option key={sub._id} value={sub._id}>
-                {sub.name}
-              </option>
-            ))}
+          <option value="">Select Type</option>
+          <option value="Objective">Objective</option>
+          <option value="Subjective">Subjective</option>
         </select>
 
+        {type === "Objective" ? (
+          <>
+            {" "}
+            <p>Subject</p>
+            <select
+              name="subject"
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              id="subject"
+            >
+              <option value="">Select subject</option>
+              {subjects &&
+                subjects.map((sub) => (
+                  <option key={sub._id} value={sub._id}>
+                    {sub.name}
+                  </option>
+                ))}
+            </select>{" "}
+          </>
+        ) : (
+          <>
+            <p>Upload pdf</p>
+            <input
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+            />
+          </>
+        )}
         <p>Start Time</p>
         <input
           type="time"

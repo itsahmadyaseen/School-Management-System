@@ -3,13 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../Context/GlobalContext.jsx";
 
 const Subjects = () => {
-  const { fetchSubjects, subjects, loading, error, userDetails, fetchUsers } =
+  const { fetchSubjects, subjects, loading, error, userDetails, fetchUser } =
     useGlobalContext();
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    fetchUsers();
+    fetchUser();
   }, []); // Run once on mount to fetch user details
 
   useEffect(() => {

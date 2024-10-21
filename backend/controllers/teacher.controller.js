@@ -108,7 +108,7 @@ export const getTeachers = async (req, res) => {
   try {
     const teachers = await Teacher.find().sort({ createdAt: -1 });
 
-    console.log("Fetched Teachers", teachers);
+    console.log("Fetched Teachers");
     return res
       .status(200)
       .json({ message: "Fetched Teachers", data: teachers });
@@ -127,7 +127,7 @@ export const getTeacherById = async (req, res) => {
 
     const teacher = await Teacher.findById(id);
 
-    console.log("Fetched Teacher", teacher);
+    console.log("Fetched Teacher");
     return res.status(200).json({ message: "Fetched Teacher", data: teacher });
   } catch (error) {
     console.log("Error fetching Teachers", error);

@@ -42,6 +42,10 @@ const testSchema = new mongoose.Schema(
       required: true,
     },
 
+    responsePdfUrl:{
+      type:String,
+    },
+
     maxMarks: {
       type: Number,
     },

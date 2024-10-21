@@ -26,7 +26,7 @@ export const GlobalProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const fetchUsers = useCallback(async () => {
+  const fetchUser = useCallback(async () => {
     try {
       // console.log(id);
 
@@ -152,7 +152,6 @@ export const GlobalProvider = ({ children }) => {
         message: "Error adding question. Please try again.",
       });
 
-
       console.log("Error adding question", error);
     }
   };
@@ -177,7 +176,6 @@ export const GlobalProvider = ({ children }) => {
       fetchSelectedSubject(id);
       console.log("deketed");
     } catch (error) {
-
       setAlert({
         show: true,
         type: "error",
@@ -261,7 +259,7 @@ export const GlobalProvider = ({ children }) => {
         classes,
         fetchClasses,
         addTest,
-        fetchUsers,
+        fetchUser,
         userDetails,
         role,
         id,

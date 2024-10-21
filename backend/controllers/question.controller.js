@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Question from "../models/question.model.js";
 import Subject from "../models/subject.model.js";
 
@@ -57,16 +58,34 @@ export const getQuestions = async (req, res) => {
 };
 
 export const deleteQuestion = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const { questionId } = req.query;
+    const questionId = new mongoose.Types.ObjectId(req.query.questionId);
 
-    const question = await Question.findByIdAndDelete(questionId);
+    await Question.findByIdAndDelete(questionId, { session });
 
-    await Question.findByIdAndDelete(questionId);
-    console.log("Question deleted ");
+    if (!question) {
+      await session.abortTransaction();
+      session.endSession();
+      console.log("Cannot find question", question);
+      return res.status(400).json("Cannot Find Question");
+    }
 
-    return res.status(200).json({ message: "Question deleted " });
-  } catch (error) {
+    await Subject.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } },
+      { session }
+    );
+
+    console.log("Question deleted");
+    await session.commitTransaction();
+    session.endSession();
+    return res.status(200).json({ message: "Question deleted" });
+  } catch (error) {  
+    await session.abortTransaction();
+    session.endSession();
     console.log("Error deleting question ", error);
     return res
       .status(500)

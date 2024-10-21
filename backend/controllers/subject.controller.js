@@ -53,7 +53,7 @@ export const getSubjectsByClass = async (req, res) => {
       path: "class",
       select: "name",
     });
-    console.log("Subjects fetched ", subjects);
+    console.log("Subjects by class fetched ");
     return res
       .status(200)
       .json({ message: "Subjects fetched ", data: subjects });
@@ -81,7 +81,7 @@ export const getSubjectById = async (req, res) => {
 
       .sort({ createdAt: -1 });
 
-    console.log("Subject fetched ");
+    console.log("Subject fetched by id ", subject);
     return res.status(200).json({ message: "Subject fetched ", data: subject });
   } catch (error) {
     console.log("Error fetching subject ", error);

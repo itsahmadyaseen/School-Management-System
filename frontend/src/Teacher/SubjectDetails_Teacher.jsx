@@ -131,7 +131,9 @@ const SubjectDetails_Teacher = () => {
       ) : (
         <p className="text-center text-gray-500">No Details found</p>
       )}
-      {alert.show && <Alert className='' type={alert.type} message={alert.message} />}
+      {alert.show && (
+        <Alert className="" type={alert.type} message={alert.message} />
+      )}
     </div>
   );
 };

@@ -1,16 +1,15 @@
 import Question from "../models/question.model.js";
 import Response from "../models/response.model.js";
 import Test from "../models/test.model.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const createTest = async (req, res) => {
-  console.log(req.user);
   const classId = req.user.classId;
-
   const { name, subjectId, startTime, endTime } = req.body;
-  console.log(name, subjectId, startTime, endTime);
+  // console.log(name, subjectId, startTime, endTime);
 
-  const [startHours, startMinutes] = startTime.split(":");
-  const [endHours, endMinutes] = endTime.split(":");
+  const [startHours, startMinutes] = startTime?.split(":");
+  const [endHours, endMinutes] = endTime?.split(":");
 
   const startDate = new Date();
   startDate.setHours(startHours);
@@ -20,13 +19,30 @@ export const createTest = async (req, res) => {
   endDate.setHours(endHours);
   endDate.setMinutes(endMinutes);
 
+  console.log("file", req.file);
+  const pdfLocalPath = req.file?.path;
+
+  let pdfUrl;
+
+  if (pdfLocalPath) {
+    pdfUrl = await uploadOnCloudinary(pdfLocalPath);
+    if (!pdfUrl) {
+      console.log("Cannot get cloudinary file path");
+      return res.status(400).json({
+        message: "Cannot get cloudinary file path",
+      });
+    }
+  } else {
+    return res.status(400).json("stop");
+  }
+
   try {
     const selectedQuestions = await Question.find({
       class: classId,
       subject: subjectId,
     }).select("_id");
 
-    console.log("selectedQuestions ", selectedQuestions);
+    // console.log("selectedQuestions ", selectedQuestions);
 
     const newTest = new Test({
       name,
@@ -36,10 +52,11 @@ export const createTest = async (req, res) => {
       startTime: startDate,
       endTime: endDate,
       isActive: true,
+      responsePdfUrl: pdfUrl || "",
     });
 
     await newTest.save();
-    console.log("Test created ", newTest);
+    console.log("Test created");
     return res.status(201).json({ message: "Test created ", data: newTest });
   } catch (error) {
     console.log("Error creating test ", error);
@@ -69,9 +86,8 @@ export const getTests = async (req, res) => {
       .sort({ createdAt: -1 });
 
     const isActive = tests.isActive;
-    console.log(isActive);
 
-    console.log("Tests fetched ", tests);
+    console.log("Tests fetched ");
     return res.status(200).json({ message: "Tests fetched ", data: tests });
   } catch (error) {
     console.log("Error fetching tests ", error);
@@ -85,7 +101,10 @@ export const getTestById = async (req, res) => {
   try {
     const testId = req.params.testId;
 
-    const alreadySubmitted = await Response.findOne({ student: req.user.id, test:testId });
+    const alreadySubmitted = await Response.findOne({
+      student: req.user.id,
+      test: testId,
+    });
     if (alreadySubmitted) {
       console.log("User has already submitted", alreadySubmitted);
       return res.status(403).json({
