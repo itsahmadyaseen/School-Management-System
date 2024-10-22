@@ -79,7 +79,7 @@ export const login = async (req, res) => {
           classId: existingUser.class,
         };
         const token = jwt.sign(authClaims, process.env.SECRET_KEY, {
-          expiresIn: "1d",
+          expiresIn: "4d",
         });
         res.cookie("token", token);
 

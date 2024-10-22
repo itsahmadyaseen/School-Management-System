@@ -19,41 +19,47 @@ export const createTest = async (req, res) => {
   endDate.setHours(endHours);
   endDate.setMinutes(endMinutes);
 
-  console.log("file", req.file);
-  const pdfLocalPath = req.file?.path;
+  try {
+    console.log("file", req.file?.path);
+    const pdfLocalPath = req.file?.path;
 
-  let pdfUrl;
+    let pdfUrl;
+    let newTest;
 
-  if (pdfLocalPath) {
-    pdfUrl = await uploadOnCloudinary(pdfLocalPath);
-    if (!pdfUrl) {
-      console.log("Cannot get cloudinary file path");
-      return res.status(400).json({
-        message: "Cannot get cloudinary file path",
+    if (pdfLocalPath) {
+      pdfUrl = await uploadOnCloudinary(pdfLocalPath);
+      if (!pdfUrl) {
+        console.log("Cannot get cloudinary file path");
+        return res.status(400).json({
+          message: "Cannot get cloudinary file path",
+        });
+      }
+
+      newTest = new Test({
+        name,
+        class: classId,
+        subject: subjectId,
+        startTime: startDate,
+        endTime: endDate,
+        isActive: true,
+        responsePdfUrl: pdfUrl,
+      });
+    } else {
+      const selectedQuestions = await Question.find({
+        class: classId,
+        subject: subjectId,
+      }).select("_id");
+
+      newTest = new Test({
+        name,
+        class: classId,
+        questions: selectedQuestions,
+        subject: subjectId,
+        startTime: startDate,
+        endTime: endDate,
+        isActive: true,
       });
     }
-  } else {
-    return res.status(400).json("stop");
-  }
-
-  try {
-    const selectedQuestions = await Question.find({
-      class: classId,
-      subject: subjectId,
-    }).select("_id");
-
-    // console.log("selectedQuestions ", selectedQuestions);
-
-    const newTest = new Test({
-      name,
-      class: classId,
-      questions: selectedQuestions,
-      subject: subjectId,
-      startTime: startDate,
-      endTime: endDate,
-      isActive: true,
-      responsePdfUrl: pdfUrl || "",
-    });
 
     await newTest.save();
     console.log("Test created");
@@ -112,7 +118,7 @@ export const getTestById = async (req, res) => {
       });
     }
 
-    const tests = await Test.findById(testId)
+    const test = await Test.findById(testId)
       .populate({
         path: "class",
         select: "name",
@@ -124,12 +130,10 @@ export const getTestById = async (req, res) => {
       .populate({
         path: "subject",
         select: "name",
-      })
+      });
 
-      .sort({ createdAt: -1 });
-
-    console.log("Test fetched ", tests);
-    return res.status(200).json({ message: "Tests fetched ", data: tests });
+    console.log("Test fetched ", test);
+    return res.status(200).json({ message: "Tests fetched ", data: test });
   } catch (error) {
     console.log("Error fetching test ", error);
     return res
