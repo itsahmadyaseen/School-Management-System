@@ -3,6 +3,7 @@ import Response from "../models/response.model.js";
 import Result from "../models/result.model.js";
 import Class from "../models/class.model.js";
 import mongoose from "mongoose";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const submitResponse = async (req, res) => {
   const { answers, testId } = req.body;
@@ -14,46 +15,63 @@ export const submitResponse = async (req, res) => {
   }
 
   let marksObtained = 0;
+  const responsePdf = req.file?.path;
+  let newResponse;
 
   try {
-    for (let i = 0; i < answers.length; i++) {
-      const currQues = answers[i].question;
-      const currAns = answers[i].answer;
-      // console.log(ques);
+    // Subjective
 
-      try {
-        const questionDetails = await Question.findById(currQues).select(
-          "answer marks"
-        );
+    if (responsePdf) {
+      const pdfUrl = uploadOnCloudinary(responsePdf);
 
-        if (!questionDetails) {
-          console.log("Cannot find question", currQues);
-          return res.status(404).json({ message: "Cannot find question" });
-        }
-
-        // correct anwer?
-        // console.log("question", questionDetails.answer);
-        // console.log("answer", currAns);
-
-        if (questionDetails.answer == currAns) {
-          marksObtained += questionDetails.marks;
-        }
-      } catch (error) {
-        console.log("Error fetching questions", error);
-        return res
-          .status(500)
-          .json({ message: "Error fetching questions", data: error });
-      }
+      newResponse = new Response({
+        responsePdfUrl: pdfUrl,
+        test: testId,
+        student: req.user.id,
+        classId: req.user.classId,
+      });
     }
-    // console.log(marksObtained);
+    // Objective
+    else {
+      for (let i = 0; i < answers.length; i++) {
+        const currQues = answers[i].question;
+        const currAns = answers[i].answer;
+        // console.log(ques);
 
-    const newResponse = new Response({
-      answers,
-      test: testId,
-      student: req.user.id,
-      classId: req.user.classId,
-      score: marksObtained,
-    });
+        try {
+          const questionDetails = await Question.findById(currQues).select(
+            "answer marks"
+          );
+
+          if (!questionDetails) {
+            console.log("Cannot find question", currQues);
+            return res.status(404).json({ message: "Cannot find question" });
+          }
+
+          // correct answer?
+          // console.log("question", questionDetails.answer);
+          // console.log("answer", currAns);
+
+          if (questionDetails.answer == currAns) {
+            marksObtained += questionDetails.marks;
+          }
+        } catch (error) {
+          console.log("Error fetching questions", error);
+          return res
+            .status(500)
+            .json({ message: "Error fetching questions", data: error });
+        }
+      }
+      // console.log(marksObtained);
+
+      newResponse = new Response({
+        answers,
+        test: testId,
+        student: req.user.id,
+        classId: req.user.classId,
+        score: marksObtained,
+      });
+    }
 
     await newResponse.save();
 

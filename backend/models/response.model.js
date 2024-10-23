@@ -11,6 +11,9 @@ const responseSchema = new mongoose.Schema(
         answer: String,
       },
     ],
+    responsePdfUrl: {
+      type: String,
+    },
     test: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Test",
