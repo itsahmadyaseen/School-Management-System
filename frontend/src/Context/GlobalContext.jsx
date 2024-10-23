@@ -204,13 +204,19 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
-  const addTest = async (name, subjectId, startTime, endTime) => {
+  const addTest = async (name, subjectId, startTime, endTime, selectedFile) => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("subjectId", subjectId);
+    formData.append("startTime", startTime);
+    formData.append("endTime", endTime);
+    formData.append("responsePdfUrl", selectedFile);
+
     try {
-      await axiosInstance.post(`/tests/create`, {
-        name,
-        subjectId,
-        startTime,
-        endTime,
+      await axiosInstance.post(`/tests/create`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       await fetchTests();
     } catch (error) {

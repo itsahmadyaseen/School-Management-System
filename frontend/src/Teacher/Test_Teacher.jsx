@@ -32,8 +32,10 @@ const Test_Teacher = () => {
     setIsAddModalOpen(true);
   };
 
-  const handleAddTest = (name, subjectId, startTime, endTime) => {
-    addTest(name, subjectId, startTime, endTime);
+  const handleAddTest = (name, subjectId, startTime, endTime, selectedFile) => {
+    console.log('inside --- ',selectedFile);
+
+    addTest(name, subjectId, startTime, endTime, selectedFile);
   };
 
   if (loading) {

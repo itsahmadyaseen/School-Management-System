@@ -39,6 +39,8 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    console.log("file", file);
+
     if (file && file.type === "application/pdf") {
       setSelectedFile(file);
     } else {
@@ -77,7 +79,6 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
 
         {type === "Objective" ? (
           <>
-            {" "}
             <p>Subject</p>
             <select
               name="subject"
@@ -93,10 +94,26 @@ const AddTestModal = ({ isOpen, onClose, onAddTest }) => {
                     {sub.name}
                   </option>
                 ))}
-            </select>{" "}
+            </select>
           </>
         ) : (
           <>
+            <p>Subject</p>
+            <select
+              name="subject"
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              id="subject"
+            >
+              <option value="">Select subject</option>
+              {subjects &&
+                subjects.map((sub) => (
+                  <option key={sub._id} value={sub._id}>
+                    {sub.name}
+                  </option>
+                ))}
+            </select>
             <p>Upload pdf</p>
             <input
               className="w-full p-2 border border-gray-300 rounded mb-4"
