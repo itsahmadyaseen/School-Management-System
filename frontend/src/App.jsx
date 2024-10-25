@@ -11,48 +11,85 @@ import Login_Student from "./Student/Login_Student";
 import Signup_Student from "./Student/Signup_Student";
 import Signup_Teacher from "./Teacher/Signup_Teacher";
 import SidebarMain from "./Components/SidebarMain";
-import Navbar from "./Components/Navbar";
+import {Navbar} from "./Components/Navbar.jsx";
+import ProtectedRoute from "./ProtectedRoute"; // Import ProtectedRoute
 
 const AppRoutes = () => {
   return (
     <div className="flex min-h-screen">
-    {/* Sidebar */}
-    <div className="sidebar">
-      <SidebarMain />
-    </div>
+      <div className="sidebar">
+        <SidebarMain />
+      </div>
 
-    {/* Main Content Area */}
-    <div className="main-content flex-grow ml-72">
-      {/* Navbar should be placed inside main-content to span correctly */}
-      <Navbar  />
-      {/* Content Area */}
-      <div className="content p-5 w-full h-[calc(100%-64px)] overflow-auto">
-        <Routes>
-          <Route path="/student/test" element={<Test_Student />} />
-          <Route path="/teacher/test" element={<Test_Teacher />} />
-          <Route path="/test/:id" element={<TestDetails />} />
-          <Route path="/subjects/:classId" element={<Subjects />} />
-          <Route
-            path="/student/subjects/:id"
-            element={<SubjectDetails_Student />}
-          />
-          <Route
-            path="/teacher/subjects/:id"
-            element={<SubjectDetails_Teacher />}
-          />
-          <Route path="/student/signup" element={<Signup_Student />} />
-          <Route path="/teacher/signup" element={<Signup_Teacher />} />
-          <Route path="/teacher/login" element={<Login_Teacher />} />
-          <Route path="/student/login" element={<Login_Student />} />
-        </Routes>
+      <div className="main-content flex-grow ml-72">
+        <ProtectedRoute>
+          <Navbar />
+        </ProtectedRoute>
+        <div className="content p-5 w-full h-[calc(100%-64px)] overflow-auto">
+          <Routes>
+            {/* Unprotected Routes */}
+            <Route path="/student/login" element={<Login_Student />} />
+            <Route path="/teacher/login" element={<Login_Teacher />} />
+            <Route path="/student/signup" element={<Signup_Student />} />
+            <Route path="/teacher/signup" element={<Signup_Teacher />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/student/test"
+              element={
+                <ProtectedRoute>
+                  <Test_Student />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/test"
+              element={
+                <ProtectedRoute>
+                  <Test_Teacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/test/:id"
+              element={
+                <ProtectedRoute>
+                  <TestDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/subjects/:classId"
+              element={
+                <ProtectedRoute>
+                  <Subjects />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/student/subjects/:id"
+              element={
+                <ProtectedRoute>
+                  <SubjectDetails_Student />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/subjects/:id"
+              element={
+                <ProtectedRoute>
+                  <SubjectDetails_Teacher />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 
 function App() {
-  // always keep all elements inside router to enable useNavigate()
   return (
     <Router>
       <GlobalProvider>
@@ -63,4 +100,3 @@ function App() {
 }
 
 export default App;
-
