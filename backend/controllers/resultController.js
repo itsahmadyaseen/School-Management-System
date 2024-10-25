@@ -3,26 +3,37 @@ import Response from "../models/response.model.js";
 import Result from "../models/result.model.js";
 import Class from "../models/class.model.js";
 import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const submitResponse = async (req, res) => {
   const { answers, testId } = req.body;
   // console.log("answers : ", answers);
 
-  if (!answers) {
-    console.log("Cannot get answers", answers);
-    return res.status(400).json({ message: "Cannot get answers" });
-  }
+  // if (!answers) {
+  //   console.log("Cannot get answers", answers);
+  //   return res.status(400).json({ message: "Cannot get answers" });
+  // }
 
   let marksObtained = 0;
+  console.log("req.file", req.file);
+
   const responsePdf = req.file?.path;
+  console.log("pdf", responsePdf);
+
   let newResponse;
 
   try {
     // Subjective
 
     if (responsePdf) {
-      const pdfUrl = uploadOnCloudinary(responsePdf);
+      const pdfUrl = await uploadOnCloudinary(responsePdf);
+      if (!pdfUrl) {
+        console.log("Cannot get cloudinary file path");
+        return res.status(400).json({
+          message: "Cannot get cloudinary file path",
+        });
+      }
 
       newResponse = new Response({
         responsePdfUrl: pdfUrl,
@@ -170,13 +181,13 @@ export const fetchResultForTeacher = async (req, res) => {
                 $expr: {
                   $and: [
                     { $eq: ["$student", "$$studentId"] }, // Match the student ID
-                    { $eq: ["$test", testId] }, // Match the test ID
+                    { $eq: ["$test", new ObjectId(testId)] }, // Match the test ID
                   ],
                 },
               },
             },
             {
-              $project: { score: 1 }, // Only retrieve the score field from the response
+              $project: { _id: 1, score: 1, responsePdfUrl: 1 },
             },
           ],
           as: "responseDetails", // This will hold the response details for each student
@@ -192,6 +203,11 @@ export const fetchResultForTeacher = async (req, res) => {
       },
       {
         $addFields: {
+          responseId: { $arrayElemAt: ["$responseDetails._id", 0] },
+          responsePdfUrl: {
+            $arrayElemAt: ["$responseDetails.responsePdfUrl", 0],
+          },
+          studentId: { $arrayElemAt: ["$studentName._id", 0] },
           fullName: { $arrayElemAt: ["$studentName.fullname", 0] }, // Get the full name from the joined studentInfo array
           score: {
             $ifNull: [{ $arrayElemAt: ["$responseDetails.score", 0] }, 0], // If response exists, get score; otherwise, 0
@@ -207,6 +223,9 @@ export const fetchResultForTeacher = async (req, res) => {
       },
       {
         $project: {
+          responseId: 1,
+          responsePdfUrl: 1,
+          studentId: 1,
           fullName: 1, // Show the student details (name, etc.)
           score: 1, // Show the score
           status: 1, // Show the status ("Present" or "Absent")
@@ -223,5 +242,24 @@ export const fetchResultForTeacher = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error fetching results", data: error });
+  }
+};
+
+export const assignMarks = async (req, res) => {
+  const { marks, responseId } = req.body;
+
+  console.log("res", responseId);
+
+  try {
+    await Response.findByIdAndUpdate(responseId, {
+      score: marks,
+    });
+    console.log("Assigned Score");
+    return res.status(200).json({ message: "Assigned Score" });
+  } catch (error) {
+    console.log("Error assigning score", error);
+    return res
+      .status(500)
+      .json({ message: "Error assigning score", data: error });
   }
 };
