@@ -18,7 +18,6 @@ const TeacherResultModal = ({ isOpen, onClose, testId }) => {
       const response = await axiosInstance.get(
         `/results/fetch-result-teacher/${testId}`
       );
-      console.log(response.data.data);
 
       if (response.data.data.length > 0) setResult(response.data.data);
       else setNotGivenExam(true);
@@ -57,7 +56,7 @@ const TeacherResultModal = ({ isOpen, onClose, testId }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl"
+        className="p-6 rounded-lg shadow-lg w-full max-w-3xl"
         style={{ backgroundColor: "#90A28D" }}
       >
         <div>
@@ -111,7 +110,7 @@ const TeacherResultModal = ({ isOpen, onClose, testId }) => {
                                 type="number"
                                 className="border rounded py-1 px-2 w-24"
                                 placeholder="Assign Marks"
-                                value={marks[res.studentId]}
+                                value={marks[res.studentId] ?? ""}
                                 onChange={(e) => {
                                   handleMarksChange(e, res.studentId);
                                 }}
