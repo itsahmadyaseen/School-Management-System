@@ -73,13 +73,18 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const submitResponse = async (id, answers) => {
+  const submitResponse = async (id, answers, file) => {
     try {
-      console.log(answers, "answers");
+      console.log("file in context", file);
+      const formData = new FormData();
+      formData.append("testId", id);
+      formData.append("answers", answers);
+      formData.append("responsePdfUrl", file);
 
-      await axiosInstance.post(`/results/submit-response`, {
+      await axiosInstance.post("/results/submit-response", formData, {
         testId: id,
         answers,
+        responsePdfUrl: file,
       });
       navigate("/student/test");
 
@@ -244,6 +249,18 @@ export const GlobalProvider = ({ children }) => {
     }
   }, []);
 
+  const assignMarksApi = async (marks, responseId) => {
+    try {
+      await axiosInstance.post(`/results/assign-marks`, {
+        marks,
+        responseId,
+      });
+      console.log("Assigned Marks", marks);
+    } catch (error) {
+      console.log("Error assigning marks", error);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -274,6 +291,7 @@ export const GlobalProvider = ({ children }) => {
         notGivenExam,
         // seeResultTeacher,
         alert,
+        assignMarksApi,
       }}
     >
       {children}

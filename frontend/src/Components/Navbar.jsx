@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useGlobalContext } from "../Context/GlobalContext";
 
-const Navbar = () => {
+export const Navbar = () => {
   const { userDetails, fetchUser } = useGlobalContext();
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+// export default Navbar;
