@@ -46,7 +46,9 @@ const StudentResultModal = ({ isOpen, onClose, testId }) => {
           {loading ? (
             <h2 className="text-xl text-gray-300">Loading...</h2>
           ) : notGivenExam ? (
-            <h2 className="text-xl text-gray-300">You have not attempted the exam</h2>
+            <h2 className="text-xl text-gray-300">
+              You have not attempted the exam
+            </h2>
           ) : (
             <div className="overflow-x-auto w-full px-3">
               <h3 className="text-gray-100 font-semibold text-lg">
@@ -54,35 +56,75 @@ const StudentResultModal = ({ isOpen, onClose, testId }) => {
               </h3>
               <table className="min-w-full bg-white shadow-lg rounded-lg mb-2">
                 <thead>
-                  <tr className="bg-gray-200 text-gray-700">
-                    <th className="py-2 px-4 text-left">Question</th>
-                    <th className="py-3 px-6 text-left">Given answer</th>
-                    <th className="py-3 px-6 text-left">Correct answer</th>
-                    <th className="py-3 px-6 text-left">Weightage</th>
-                    <th className="py-3 px-6 text-left">Status</th>
-                  </tr>
+                  {!result?.responsePdfUrl ? (
+                    <tr className="bg-gray-200 text-gray-700">
+                      <th className="py-2 px-6 text-left">Question</th>
+                      <th className="py-3 px-6 text-left">Given answer</th>
+                      <th className="py-3 px-6 text-left">Correct answer</th>
+                      <th className="py-3 px-6 text-left">Weightage</th>
+                      <th className="py-3 px-6 text-left">Status</th>
+                    </tr>
+                  ) : (
+                    <tr className="bg-gray-200 text-gray-700">
+                      <th className="py-2 px-6 text-left">Question Pdf</th>
+                      <th className="py-2 px-6 text-left">Response Pdf</th>
+                      <th className="py-2 px-6 text-left">Score</th>
+                    </tr>
+                  )}
                 </thead>
                 <tbody>
-                  {result?.answers?.map((ans, index) => (
-                    <tr className="border-b" key={ans._id}>
-                      {/* {console.log("dsa", ans)} */}
-                      <td className="py-3 px-6 text-gray-800">{index + 1}</td>
-                      <td className="py-3 px-6 text-gray-800">{ans.answer}</td>
+                  {!result.responsePdfUrl ? (
+                    result?.answers?.map((ans, index) => (
+                      <tr className="border-b" key={ans._id}>
+                        {/* {console.log("dsa", ans)} */}
+                        <td className="py-3 px-6 text-gray-800">{index + 1}</td>
+                        <td className="py-3 px-6 text-gray-800">
+                          {ans.answer}
+                        </td>
+                        <td className="py-3 px-6 text-gray-800">
+                          {ans.question.answer}
+                        </td>
+                        <td className="py-3 px-6 text-gray-800">
+                          {ans.question.marks}
+                        </td>
+                        <td className="py-3 px-6 text-gray-800">
+                          {ans.answer === ans.question.answer ? (
+                            <FaCheck className=" text-green-600" />
+                          ) : (
+                            <FaXmark className=" text-red-500" />
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-b">
                       <td className="py-3 px-6 text-gray-800">
-                        {ans.question.answer}
+                        <a
+                          href={result.test?.responsePdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="w-full h-full text-black bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+                            Download Pdf
+                          </button>
+                        </a>
                       </td>
                       <td className="py-3 px-6 text-gray-800">
-                        {ans.question.marks}
+                        <a
+                          href={result.responsePdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="w-full h-full text-black bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+                            Download Pdf
+                          </button>
+                        </a>
                       </td>
                       <td className="py-3 px-6 text-gray-800">
-                        {ans.answer === ans.question.answer ? (
-                          <FaCheck className=" text-green-600" />
-                        ) : (
-                          <FaXmark className=" text-red-500" />
-                        )}
+                        {result.score || "Not Assigned"}
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

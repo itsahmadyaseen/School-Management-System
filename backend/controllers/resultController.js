@@ -131,18 +131,55 @@ export const generateResult = async (req, res) => {
 
 export const fetchResult = async (req, res) => {
   try {
-    const testId = req.params.testId;
-    console.log(req.user.id);
+    const testId = new ObjectId(req.params.testId);
+    const studentId = new ObjectId(req.user.id);
+
+    console.log("t", typeof testId);
+    console.log("s", studentId);
 
     const resultDetails = await Response.findOne({
       test: testId,
       student: req.user.id,
     })
-      .populate({
-        path: "answers.question",
-        select: "answer marks",
-      })
-      .select("answers score");
+    .populate({
+      path: "answers.question",
+      select: "answer marks",
+    })
+    .populate({
+      path: "test", // Ensure that `test` is the correct field name referencing the Test model
+      select: "responsePdfUrl", // Only select the `responsePdfUrl` field from the `Test` document
+    })
+    .select("answers score responsePdfUrl");
+
+    // const resultDetails = await Response.aggregate([
+    //   {
+    //     $match: {
+    //       test: testId,
+    //       student: studentId,
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "tests",
+    //       localField: "test",
+    //       foreignField: "_id",
+    //       as: "testDetails",
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: "$testDetails",
+    //       preserveNullAndEmptyArrays: true, // Ensures no errors if `testDetails` is missing
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       score: 1,
+    //       responsePdfUrl: 1, // PDF URL from `Response` document
+    //       testResponsePdfUrl: "$testDetails.responsePdfUrl", // PDF URL from `Test` document
+    //     },
+    //   },
+    // ]);
 
     console.log(resultDetails);
     return res
