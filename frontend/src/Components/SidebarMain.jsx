@@ -1,4 +1,5 @@
 import { Nsidebar, SidebarItem } from "./nsidebar";
+import { GiBookPile } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { SiSpeedtest } from "react-icons/si";
 import { FiBookOpen } from "react-icons/fi";
@@ -36,6 +37,17 @@ const SidebarMain = () => {
         alert
         active={activeItem === "Dashboard"}
         onClick={() => setActiveItem("Dashboard")}
+      />
+      <SidebarItem
+        icon={<GiBookPile size={20} />}
+        text={"Attendance"}
+        active={activeItem === "Attendance"}
+        onClick={() => {
+          setActiveItem("Attendance");
+          navigate(
+            role == "student" ? "/student/attendance" : "/teacher/attendance"
+          );
+        }}
       />
       <SidebarItem
         icon={<FiBookOpen size={20} />}
