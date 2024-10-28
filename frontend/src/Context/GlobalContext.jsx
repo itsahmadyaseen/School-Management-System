@@ -261,15 +261,22 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // Students
+
   const fetchStudents = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(`/students/get`);
 
       setStudents(response.data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log("Error fetching students", error);
     }
   };
+
+  // Attendance
 
   const submitAttendance = async (attendanceDetails) => {
     try {
