@@ -1,9 +1,10 @@
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { useGlobalContext } from "../Context/GlobalContext";
 import { useEffect, useState } from "react";
+import Alert from "../Components/Alert";
 
 const Attendance_Teacher = () => {
-  const { fetchStudents, students, submitAttendance, loading } =
+  const { fetchStudents, students, submitAttendance, loading, alert } =
     useGlobalContext();
   const [attendanceDetails, setAttendanceDetails] = useState([]);
 
@@ -60,7 +61,13 @@ const Attendance_Teacher = () => {
           </thead>
           <tbody>
             {loading ? (
-              <p className="text-lg text-center text-gray-500">Loading List...</p>
+              <tr>
+                <td>
+                  <p className="text-lg text-center text-gray-500">
+                    Loading List...
+                  </p>
+                </td>
+              </tr>
             ) : (
               <>
                 {students.map((stu, index) => {
@@ -109,6 +116,9 @@ const Attendance_Teacher = () => {
           Submit Attendance
         </button>
       </div>
+      {alert.show && (
+        <Alert className="" type={alert.type} message={alert.message} />
+      )}
     </div>
   );
 };
