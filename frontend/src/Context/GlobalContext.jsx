@@ -261,6 +261,28 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const fetchStudents = async () => {
+    try {
+      const response = await axiosInstance.get(`/students/get`);
+
+      setStudents(response.data.data);
+    } catch (error) {
+      console.log("Error fetching students", error);
+    }
+  };
+
+  const submitAttendance = async (attendanceDetails) => {
+    try {
+      console.log("att", attendanceDetails);
+
+      await axiosInstance.post(`/attendance/add`, {
+        studentDetails: attendanceDetails,
+      });
+    } catch (error) {
+      console.log("Error fetching students", error);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -292,6 +314,8 @@ export const GlobalProvider = ({ children }) => {
         // seeResultTeacher,
         alert,
         assignMarksApi,
+        fetchStudents,
+        submitAttendance,
       }}
     >
       {children}

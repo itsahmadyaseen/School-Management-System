@@ -33,7 +33,7 @@ const Test_Teacher = () => {
   };
 
   const handleAddTest = (name, subjectId, startTime, endTime, selectedFile) => {
-    console.log('inside --- ',selectedFile);
+    console.log("inside --- ", selectedFile);
 
     addTest(name, subjectId, startTime, endTime, selectedFile);
   };
@@ -91,7 +91,7 @@ const Test_Teacher = () => {
                   </td>
                   <td className="py-3 px-6 text-gray-600">{test.class.name}</td>
                   <td className="py-3 px-6 text-gray-600">
-                    {test.questions.length}
+                    {test.questions.length == 0 ? "PDF" : test.questions.length}
                   </td>
                   <td className="py-3 px-6 text-gray-600">
                     {test.isActive ? "Ongoing" : "Ended"}

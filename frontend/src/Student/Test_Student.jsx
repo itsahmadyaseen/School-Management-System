@@ -15,7 +15,7 @@ const Test_Student = () => {
   }, []);
 
   const handleClick = (testId) => {
-    navigate(`/test/${testId}`); 
+    navigate(`/test/${testId}`);
   };
 
   if (loading) {
@@ -59,7 +59,7 @@ const Test_Student = () => {
                   </td>
                   <td className="py-3 px-6 text-gray-600">{test.class.name}</td>
                   <td className="py-3 px-6 text-gray-600">
-                    {test.questions.length}
+                    {test.questions.length == 0 ? "PDF" : test.questions.length}
                   </td>
                   <td className="py-3 px-6 text-gray-600">
                     {test.isActive ? "Ongoing" : "Ended"}
