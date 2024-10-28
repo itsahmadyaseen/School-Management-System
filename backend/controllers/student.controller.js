@@ -84,7 +84,7 @@ export const login = async (req, res) => {
 
 export const getStudents = async (req, res) => {
   try {
-    const studentDetails = await Student.find()
+    const studentDetails = await Student.find({ class: req.user.classId })
       .select("-password")
       .sort({ createdAt: -1 });
 
