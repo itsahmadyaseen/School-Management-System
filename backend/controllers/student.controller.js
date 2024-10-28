@@ -88,7 +88,7 @@ export const getStudents = async (req, res) => {
       .select("-password")
       .sort({ createdAt: -1 });
 
-    console.log("Fetched Student", studentDetails);
+    console.log("Fetched Student");
     return res
       .status(200)
       .json({ message: "Fetched Student", data: studentDetails });

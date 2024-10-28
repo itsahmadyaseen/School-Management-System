@@ -8,7 +8,6 @@ export const addAttendance = async (req, res) => {
       month: "2-digit",
       day: "2-digit",
     });
-    console.log(date);
 
     const existingAttendance = await Attendance.findOne({ date });
 
