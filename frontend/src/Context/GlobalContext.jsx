@@ -280,11 +280,11 @@ export const GlobalProvider = ({ children }) => {
 
   const submitAttendance = async (attendanceDetails) => {
     try {
-      const response = await axiosInstance.post(`/attendance/add`, {
+      setAlert({ show: false, type: "", message: "" });
+
+      await axiosInstance.post(`/attendance/add`, {
         studentDetails: attendanceDetails,
       });
-
-      console.log("response", response);
 
       setAlert({
         show: true,
@@ -292,18 +292,13 @@ export const GlobalProvider = ({ children }) => {
         message: "Attendance added successfully!",
       });
     } catch (error) {
-      console.log(error.response.status);
-
       if (error.response.status === 400) {
-        
         setAlert({
           show: true,
           type: "error",
           message: "Attendance already submitted",
         });
-      }
-      // console.log("Error submitting attendance", error);
-      else {
+      } else {
         setAlert({
           show: true,
           type: "error",
