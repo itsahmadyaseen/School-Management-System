@@ -49,6 +49,17 @@ const SidebarMain = () => {
           );
         }}
       />
+      {role == "teacher" && (
+        <SidebarItem
+          icon={<GiBookPile size={20} />}
+          text={"Attendance History"}
+          active={activeItem === "Attendance History"}
+          onClick={() => {
+            setActiveItem("Attendance History");
+            navigate("/teacher/attendance-history");
+          }}
+        />
+      )}
       <SidebarItem
         icon={<FiBookOpen size={20} />}
         text={"Subjects"}

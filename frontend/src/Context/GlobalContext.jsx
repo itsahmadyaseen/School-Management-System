@@ -24,6 +24,8 @@ export const GlobalProvider = ({ children }) => {
   const [result, setResult] = useState([]);
   const [notGivenExam, setNotGivenExam] = useState(false);
   const [studentAttendanceDetails, setStudentAttendanceDetails] = useState([]);
+  const [teacherAttendanceDetails, setTeacherAttendanceDetails] = useState([]);
+
   const navigate = useNavigate();
 
   const fetchUser = useCallback(async () => {
@@ -326,6 +328,26 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const getAttendanceForTeacher = async (date) => {
+    try {
+      setAlert({ show: false, type: "", message: "" });
+
+      const response = await axiosInstance.get("/attendance/get-teacher", {
+        params: { date },
+      });
+
+      setTeacherAttendanceDetails(response.data.data);
+    } catch (error) {
+      console.log("Error fetching attendance details for teacher", error);
+
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Error fetching attendance",
+      });
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -361,6 +383,8 @@ export const GlobalProvider = ({ children }) => {
         submitAttendance,
         getAttendanceForStudent,
         studentAttendanceDetails,
+        getAttendanceForTeacher,
+        teacherAttendanceDetails,
       }}
     >
       {children}

@@ -49,64 +49,63 @@ const Attendance_Teacher = () => {
           Date : <span className="underline">{formattedDate}</span>
         </h3>
       </div>
-      <div className=" min-w-full flex justify-center">
-        <table className="w-1/2 bg-white shadow-lg rounded-lg mb-2">
+      <div className="min-w-full flex justify-center p-4">
+        <table className="w-1/2 bg-white shadow-lg rounded-lg">
           <thead>
-            <tr className="bg-gray-200 text-gray-700 ">
-              <th className="py-2 px-6 text-left">No.</th>
-              <th className="py-2 px-6 text-left">Student</th>
-              <th className="py-2 px-6 text-left">Present</th>
-              <th className="py-2 px-6 text-left">Absent</th>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="py-3 px-6 text-left">No.</th>
+              <th className="py-3 px-6 text-left">Student</th>
+              <th className="py-3 px-6 text-left">Present</th>
+              <th className="py-3 px-6 text-left">Absent</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td>
-                  <p className="text-lg text-center text-gray-500">
+                <td colSpan="4" className="py-6 text-center text-gray-500">
+                  <p className="text-lg font-medium animate-pulse">
                     Loading List...
                   </p>
                 </td>
               </tr>
             ) : (
-              <>
-                {students.map((stu, index) => {
-                  const studentStatus = attendanceDetails.find(
-                    (detail) => detail.studentId === stu._id
-                  );
+              students.map((stu, index) => {
+                const studentStatus = attendanceDetails.find(
+                  (detail) => detail.studentId === stu._id
+                );
 
-                  return (
-                    <tr key={stu._id}>
-                      <td className="py-2 px-6 text-left">{index + 1}</td>
-                      <td className="py-2 px-6 text-left">{stu.fullname}</td>
-                      <td className="py-2 px-6 text-left">
-                        <FaCheck
-                          onClick={() => updateAttendance(stu._id, "Present")}
-                          className={`text-3xl ${
-                            studentStatus?.status === "Present"
-                              ? "text-green-700"
-                              : "text-green-400"
-                          } font-light rounded cursor-pointer`}
-                        />
-                      </td>
-                      <td className="py-2 px-6 text-left">
-                        <FaXmark
-                          onClick={() => updateAttendance(stu._id, "Absent")}
-                          className={`text-3xl ${
-                            studentStatus?.status === "Absent"
-                              ? "text-red-700"
-                              : "text-red-400"
-                          } rounded cursor-pointer`}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </>
+                return (
+                  <tr key={stu._id} className="hover:bg-gray-100">
+                    <td className="py-3 px-6 text-left">{index + 1}</td>
+                    <td className="py-3 px-6 text-left">{stu.fullname}</td>
+                    <td className="py-3 px-6 text-left">
+                      <FaCheck
+                        onClick={() => updateAttendance(stu._id, "Present")}
+                        className={`text-3xl cursor-pointer ${
+                          studentStatus?.status === "Present"
+                            ? "text-green-700"
+                            : "text-green-400"
+                        }`}
+                      />
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      <FaXmark
+                        onClick={() => updateAttendance(stu._id, "Absent")}
+                        className={`text-3xl cursor-pointer ${
+                          studentStatus?.status === "Absent"
+                            ? "text-red-700"
+                            : "text-red-400"
+                        }`}
+                      />
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
       </div>
+
       <div className="flex justify-center w-full p-4">
         <button
           onClick={() => submitAttendance(attendanceDetails)}

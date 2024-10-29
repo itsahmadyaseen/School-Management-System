@@ -15,6 +15,7 @@ import { Navbar } from "./Components/Navbar.jsx";
 import ProtectedRoute from "./ProtectedRoute"; // Import ProtectedRoute
 import Attendance_Teacher from "./Teacher/Attendance_Teacher.jsx";
 import Attendance_Student from "./Student/Attendance_Student.jsx";
+import Attendance_History from "./Teacher/Attendance_History.jsx";
 
 const AppRoutes = () => {
   return (
@@ -61,6 +62,14 @@ const AppRoutes = () => {
               }
             />
             <Route
+              path="/teacher/attendance-history"
+              element={
+                <ProtectedRoute>
+                  <Attendance_History />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/student/attendance"
               element={
                 <ProtectedRoute>
@@ -68,6 +77,7 @@ const AppRoutes = () => {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/test/:id"
               element={
