@@ -74,3 +74,51 @@ export const getAttendanceForStudent = async (req, res) => {
     });
   }
 };
+
+export const getAttendanceForTeacher = async (req, res) => {
+  const classId = new mongoose.Types.ObjectId(req.user.classId);
+  const { date } = req.query;
+  try {
+    const attendanceDetails = await Attendance.aggregate([
+      {
+        $match: { classId, date },
+      },
+      {
+        $unwind: "$studentDetails",
+      },
+      {
+        $lookup: {
+          from: "students",
+          localField: "studentDetails.studentId",
+          foreignField: "_id",
+          as: "studentInfo",
+        },
+      },
+      {
+        $unwind: "$studentInfo",
+      },
+      {
+        $project: {
+          _id: 0,
+          studentId: "$studentDetails.studentId",
+          studentName: "$studentInfo.fullname",
+          status: "$studentDetails.status",
+        },
+      },
+    ]);
+
+    console.log("Fetched Attendance for teacher");
+
+    return res.status(200).json({
+      message: "Attendance for teacher fetched",
+      data: attendanceDetails,
+    });
+  } catch (error) {
+    console.log("Error fetching Attendance for teacher", error);
+
+    return res.status(500).json({
+      message: "Error fetching Attendance for teacher",
+      data: error,
+    });
+  }
+};
