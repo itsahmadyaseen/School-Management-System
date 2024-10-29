@@ -5,7 +5,6 @@ const verifyJWT = async (req, res, next) => {
   const token =
     req.cookies.token || req.headers["authorization"]?.split(" ")[1];
   if (!token) {
-    console.log("Provide token", token);
     return res.status(401).json({ message: "Provide token" });
   }
   try {
@@ -17,7 +16,7 @@ const verifyJWT = async (req, res, next) => {
         .json({ message: "Forbidden verification", data: decodedToken });
     }
     req.user = decodedToken;
-    console.log("User verified", decodedToken);
+    // console.log("User verified", decodedToken);
     next();
   } catch (error) {
     console.log("Error verifying", error);
