@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Attendance from "../models/attendance.model.js";
 
 export const addAttendance = async (req, res) => {
@@ -31,5 +32,45 @@ export const addAttendance = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error adding attendance", data: error });
+  }
+};
+
+export const getAttendanceForStudent = async (req, res) => {
+  const studentId = new mongoose.Types.ObjectId(req.user.id);
+  const classId = new mongoose.Types.ObjectId(req.user.classId);
+
+  try {
+    const attendanceDetails = await Attendance.aggregate([
+      {
+        $match: { classId },
+      },
+      {
+        $unwind: "$studentDetails",
+      },
+      {
+        $match: { "studentDetails.studentId": studentId },
+      },
+      {
+        $project: {
+          studentId: "$studentDetails.studentId",
+          status: "$studentDetails.status",
+          date: "$date",
+        },
+      },
+    ]);
+
+    console.log("Fetched Attendance for student");
+
+    return res.status(200).json({
+      message: "Attendance for student fetched",
+      data: attendanceDetails,
+    });
+  } catch (error) {
+    console.log("Error fetching Attendance for student", error);
+
+    return res.status(500).json({
+      message: "Error fetching Attendance for student",
+      data: error,
+    });
   }
 };
