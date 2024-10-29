@@ -53,7 +53,7 @@ const Attendance_Teacher = () => {
         <table className="w-1/2 bg-white shadow-lg rounded-lg mb-2">
           <thead>
             <tr className="bg-gray-200 text-gray-700 ">
-              <th className="py-2 px-6 text-left">S No.</th>
+              <th className="py-2 px-6 text-left">No.</th>
               <th className="py-2 px-6 text-left">Student</th>
               <th className="py-2 px-6 text-left">Present</th>
               <th className="py-2 px-6 text-left">Absent</th>
