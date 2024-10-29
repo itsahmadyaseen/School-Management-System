@@ -1,33 +1,15 @@
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { useGlobalContext } from "../Context/GlobalContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Alert from "../Components/Alert";
 
 const Attendance_Student = () => {
-  const { students, getAttendanceForStudent, studentAttendanceDetails, alert } =
+  const { getAttendanceForStudent, studentAttendanceDetails, alert } =
     useGlobalContext();
 
   useEffect(() => {
     getAttendanceForStudent();
   }, []);
-
-  const updateAttendance = (studentId, status) => {
-    setAttendanceDetails((prevDetails) => {
-      // Check if the student already has an attendance record
-      const existingStudent = prevDetails.find(
-        (detail) => detail.studentId === studentId
-      );
-      if (existingStudent) {
-        // Update the status if the student already exists
-        return prevDetails.map((detail) =>
-          detail.studentId === studentId ? { ...detail, status } : detail
-        );
-      } else {
-        // Add a new attendance record
-        return [...prevDetails, { studentId, status }];
-      }
-    });
-  };
 
   return (
     <div
@@ -52,9 +34,6 @@ const Attendance_Student = () => {
           <tbody>
             <>
               {studentAttendanceDetails.map((attendance, index) => {
-                const studentStatus = attendance?.status;
-                console.log(studentStatus);
-
                 return (
                   <tr key={attendance._id}>
                     <td className="py-2 px-6 text-left">{index + 1}</td>
@@ -62,20 +41,10 @@ const Attendance_Student = () => {
                     <td className="py-2 px-6 text-left">
                       {attendance?.status === "Present" ? (
                         <FaCheck
-                          className={`text-3xl ${
-                            attendance?.status === "Present"
-                              ? "text-green-700"
-                              : "text-green-400"
-                          } font-light rounded cursor-pointer`}
+                          className={`text-3xl text-green-400 font-light rounded`}
                         />
                       ) : (
-                        <FaXmark
-                          className={`text-3xl ${
-                            attendance?.status === "Absent"
-                              ? "text-red-700"
-                              : "text-red-400"
-                          } rounded cursor-pointer`}
-                        />
+                        <FaXmark className={`text-3xl text-red-400 rounded`} />
                       )}
                     </td>
                   </tr>
