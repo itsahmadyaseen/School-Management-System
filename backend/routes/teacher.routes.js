@@ -12,6 +12,6 @@ const router = new Router();
 router.post("/register", register);
 router.post("/login", login);
 router.post("/teacher", getTeacherById);
-router.post("/get", verifyJWT, getTeachers);
+router.get("/get", verifyJWT, getTeachers);
 
 export default router;
