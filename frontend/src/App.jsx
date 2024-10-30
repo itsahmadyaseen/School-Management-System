@@ -25,9 +25,7 @@ const AppRoutes = () => {
       </div>
 
       <div className="main-content flex-grow ml-72">
-        <ProtectedRoute>
           <Navbar />
-        </ProtectedRoute>
         <div className="content p-5 w-full h-[calc(100%-64px)] overflow-auto">
           <Routes>
             {/* Unprotected Routes */}

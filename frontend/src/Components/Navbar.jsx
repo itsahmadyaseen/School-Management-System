@@ -13,7 +13,7 @@ export const Navbar = () => {
       <nav className="w-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <span className="overflow-hidden text-xl text-black font-bold transition-all">
-            {userDetails.fullname} 
+            {userDetails?.fullname} 
           </span>
           <span
             className={`overflow-hidden text-xl text-black font-bold transition-all `}
