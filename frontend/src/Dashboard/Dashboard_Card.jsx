@@ -9,7 +9,7 @@ const Dashboard_Card = ({ img, totalCount, topic }) => {
             src={img}
             alt="student logo"
             className="rounded-full h-full "
-          />
+          /> 
         </div>
 
         <p className="text-xl px-2">{totalCount}</p>
