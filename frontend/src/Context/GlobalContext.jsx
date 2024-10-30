@@ -18,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
   const [classes, setClasses] = useState([]);
   // const [questions, setQuestions] = useState([]);
   const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alreadySubmittedError, setAlreadySubmittedError] = useState(null);
@@ -278,6 +279,21 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // Teacher
+
+  const fetchTeachers = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(`/teachers/get`);
+
+      setTeachers(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("Error fetching Teachers", error);
+    }
+  };
+
   // Attendance
 
   const submitAttendance = async (attendanceDetails) => {
@@ -367,6 +383,8 @@ export const GlobalProvider = ({ children }) => {
         deleteQuestion,
         students,
         setStudents,
+        teachers,
+        fetchTeachers,
         classes,
         fetchClasses,
         addTest,

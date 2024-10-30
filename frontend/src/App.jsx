@@ -16,7 +16,6 @@ import ProtectedRoute from "./ProtectedRoute"; // Import ProtectedRoute
 import Attendance_Teacher from "./Teacher/Attendance_Teacher.jsx";
 import Attendance_Student from "./Student/Attendance_Student.jsx";
 import Attendance_History from "./Teacher/Attendance_History.jsx";
-import Dashboard_Card from "./Dashboard/Dashboard_Card.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 
 const AppRoutes = () => {
