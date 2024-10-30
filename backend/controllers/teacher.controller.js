@@ -106,7 +106,9 @@ export const login = async (req, res) => {
 
 export const getTeachers = async (req, res) => {
   try {
-    const teachers = await Teacher.find().sort({ createdAt: -1 });
+    const teachers = await Teacher.find({ class: req.user.classId }).sort({
+      createdAt: -1,
+    });
 
     console.log("Fetched Teachers");
     return res
