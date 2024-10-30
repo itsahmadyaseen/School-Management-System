@@ -6,7 +6,7 @@ import { useGlobalContext } from "../Context/GlobalContext";
 import { useEffect } from "react";
 
 const Dashboard = () => {
-  const { fetchStudents, fetchTeachers, students, teacher } =
+  const { fetchStudents, fetchTeachers, students, teachers } =
     useGlobalContext();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Dashboard = () => {
               <Dashboard_Card
                 img="https://static.vecteezy.com/system/resources/previews/008/154/360/non_2x/student-logo-vector.jpg"
                 topic={"Student"}
-                totalCount={1234}
+                totalCount={students.length}
                 data={students}
               />
             </div>
@@ -34,8 +34,8 @@ const Dashboard = () => {
               <Dashboard_Card
                 img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUgPuFMoqcbT9HuTtsUrujn57xjYciwbmVFA&s"
                 topic={"Teacher"}
-                totalCount={1234}
-                data={teacher}
+                totalCount={teachers.length}
+                data={teachers}
               />
             </div>
           </div>
@@ -44,7 +44,7 @@ const Dashboard = () => {
           <Student_Table />
         </div>
       </div>
-      <div className="calender w-2/5 bg-blue-200 ">
+      <div className="calender w-2/5">
         <Calendar />
       </div>
     </div>

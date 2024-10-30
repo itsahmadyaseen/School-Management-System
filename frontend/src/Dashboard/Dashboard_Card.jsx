@@ -12,7 +12,7 @@ const Dashboard_Card = ({ img, totalCount, topic }) => {
           />
         </div>
 
-        <p className="text-lg">{totalCount}</p>
+        <p className="text-xl px-2">{totalCount}</p>
       </div>
       <div className="h-1/5 flex flex-col justify-between align-middle">
         <div className="bg-black"></div>
