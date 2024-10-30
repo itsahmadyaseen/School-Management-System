@@ -366,6 +366,7 @@ export const GlobalProvider = ({ children }) => {
         addQuestions,
         deleteQuestion,
         students,
+        setStudents,
         classes,
         fetchClasses,
         addTest,
