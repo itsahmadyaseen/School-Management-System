@@ -36,7 +36,10 @@ const SidebarMain = () => {
         text={"Dashboard"}
         alert
         active={activeItem === "Dashboard"}
-        onClick={() => setActiveItem("Dashboard")}
+        onClick={() => {
+          setActiveItem("Dashboard");
+          navigate("/");
+        }}
       />
       <SidebarItem
         icon={<GiBookPile size={20} />}
