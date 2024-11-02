@@ -10,6 +10,7 @@ import questionRoutes from "./routes/question.routes.js";
 import testRoutes from "./routes/test.routes.js";
 import resultRoutes from "./routes/result.routes.js";
 import attendanceRoutes from "./routes/attendance.routes.js";
+import newsRoutes from "./routes/news.routes.js";
 import cors from "cors";
 
 const app = new express();
@@ -32,6 +33,7 @@ app.use("/api/v1/questions", questionRoutes);
 app.use("/api/v1/tests", testRoutes);
 app.use("/api/v1/results", resultRoutes);
 app.use("/api/v1/attendance", attendanceRoutes);
+app.use("/api/v1/news", newsRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Port is running on", process.env.PORT);
