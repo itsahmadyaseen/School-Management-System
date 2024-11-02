@@ -12,11 +12,12 @@ import Signup_Student from "./Student/Signup_Student";
 import Signup_Teacher from "./Teacher/Signup_Teacher";
 import SidebarMain from "./Components/SidebarMain";
 import { Navbar } from "./Components/Navbar.jsx";
-import ProtectedRoute from "./ProtectedRoute"; 
+import ProtectedRoute from "./ProtectedRoute";
 import Attendance_Teacher from "./Teacher/Attendance_Teacher.jsx";
 import Attendance_Student from "./Student/Attendance_Student.jsx";
 import Attendance_History from "./Teacher/Attendance_History.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
+import News from "./Components/News.jsx";
 
 const AppRoutes = () => {
   return (
@@ -49,6 +50,14 @@ const AppRoutes = () => {
               element={
                 <ProtectedRoute>
                   <Test_Teacher />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/news"
+              element={
+                <ProtectedRoute>
+                  <News />
                 </ProtectedRoute>
               }
             />

@@ -26,6 +26,7 @@ export const GlobalProvider = ({ children }) => {
   const [notGivenExam, setNotGivenExam] = useState(false);
   const [studentAttendanceDetails, setStudentAttendanceDetails] = useState([]);
   const [teacherAttendanceDetails, setTeacherAttendanceDetails] = useState([]);
+  const [news, setNews] = useState([]);
 
   const navigate = useNavigate();
 
@@ -364,6 +365,58 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // News
+
+  const getNews = async () => {
+    try {
+      setAlert({ show: false, type: "", message: "" });
+
+      const response = await axiosInstance.get(`/news/get`);
+      console.log(response.data.data);
+      
+
+      setNews(response.data.data);
+    } catch (error) {
+      console.log("Error fetching news", error);
+
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Error fetching news",
+      });
+    }
+  };
+
+  const addNews = async (title, description, body, date) => {
+    try {
+      setAlert({ show: false, type: "", message: "" });
+
+      const response = await axiosInstance.post(`/news/add`, {
+        title,
+        description,
+        body,
+        date,
+      });
+
+      setAlert({
+        show: true,
+        type: "success",
+        message: "News added successfully",
+      });
+
+      setNews(response.data.data);
+      
+    } catch (error) {
+      console.log("Error fetching news", error);
+
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Error fetching news",
+      });
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -405,6 +458,9 @@ export const GlobalProvider = ({ children }) => {
         studentAttendanceDetails,
         getAttendanceForTeacher,
         teacherAttendanceDetails,
+        getNews,
+        news,
+        addNews,
       }}
     >
       {children}
