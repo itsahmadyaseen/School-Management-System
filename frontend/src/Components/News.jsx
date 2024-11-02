@@ -40,7 +40,7 @@ const News = () => {
           </button>
         </div>
       </div>
-      <div className="relative group grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
         {news.map((data, index) => (
             
           <NewsModal data={data} index={index} key={index} />

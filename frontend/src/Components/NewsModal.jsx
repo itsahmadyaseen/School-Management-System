@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 
-
 const NewsModal = ({ data, index }) => {
   return (
     <div
@@ -15,8 +14,8 @@ const NewsModal = ({ data, index }) => {
       </div>
 
       <div
-        className="absolute inset-0 bg-white p-6 rounded-lg shadow-lg invisible opacity-0 transform transition-all duration-300 
-            group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 z-10"
+        className="fixed top-1/2 left-1/2 bg-white p-6 rounded-lg shadow-lg invisible opacity-0 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 
+            group-hover:visible group-hover:opacity-100 z-10"
       >
         <h2 className="text-2xl font-semibold mb-4">{data.title}</h2>
         <p>
