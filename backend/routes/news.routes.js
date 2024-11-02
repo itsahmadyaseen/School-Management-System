@@ -5,6 +5,6 @@ import verifyJWT from "../middlewares/auth.middleware.js";
 const router = new Router();
 
 router.post("/add", verifyJWT, addNews);
-router.post("/get", verifyJWT, getNewsForClass);
+router.get("/get", verifyJWT, getNewsForClass);
 
 export default router;

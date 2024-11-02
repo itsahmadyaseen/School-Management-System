@@ -15,8 +15,8 @@ export const addNews = async (req, res) => {
 
     await news.save();
 
-    console.log("Error creating news", error);
-    return res.status(201).json({ message: "News created", body: news });
+    console.log("News created");
+    return res.status(201).json({ message: "News created" });
   } catch (error) {
     console.log("Error creating news", error);
 
@@ -30,10 +30,10 @@ export const getNewsForClass = async (req, res) => {
   const classId = req.user.classId;
 
   try {
-    const news = await News.find(classId);
+    const news = await News.find({ classId });
 
-    console.log("News fetched");
-    return res.status(201).json({ message: "News fetched", data: news });
+    console.log("News fetched", news);
+    return res.status(200).json({ message: "News fetched", data: news });
   } catch (error) {
     console.log("Error fetching news", error);
 
