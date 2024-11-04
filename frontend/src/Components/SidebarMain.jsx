@@ -83,6 +83,15 @@ const SidebarMain = () => {
       />
       <SidebarItem
         icon={<FiBookOpen size={20} />}
+        text={"News"}
+        active={activeItem === "News"}
+        onClick={() => {
+          setActiveItem("News");
+          navigate(`/news`);
+        }}
+      />
+      <SidebarItem
+        icon={<FiBookOpen size={20} />}
         text={"Logout"}
         active={activeItem === "Logout"}
         onClick={() => {
