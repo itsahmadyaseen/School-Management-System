@@ -6,8 +6,7 @@ import NewsModal from "./NewsModal";
 const News = () => {
   const { getNews, news, addNews } = useGlobalContext();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [hoveredNews, setHoveredNews] = useState(null);
-
+  const role = localStorage.getItem("role");
   useEffect(() => {
     getNews();
   }, []);
@@ -31,18 +30,19 @@ const News = () => {
             News
           </h1>
         </div>
-        <div className="">
-          <button
-            className="text-2xl font-bold text-white mb-8 border-2  rounded-md p-2"
-            onClick={() => handleCreate()}
-          >
-            Create News
-          </button>
-        </div>
+        {role == "teacher" && (
+          <div className="">
+            <button
+              className="text-2xl font-bold text-white mb-8 border-2  rounded-md p-2"
+              onClick={() => handleCreate()}
+            >
+              Create News
+            </button>
+          </div>
+        )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
         {news.map((data, index) => (
-            
           <NewsModal data={data} index={index} key={index} />
         ))}
       </div>
